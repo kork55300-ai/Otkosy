@@ -4,44 +4,59 @@
 <meta name="theme-color" content="#0e1013"><meta name="color-scheme" content="dark"><title>Замеры откосов</title>
 <link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><link rel="icon" href="icon-192.png">
 <style>
-:root{--bg:#0e1013;--bg2:#13161b;--card:#1a1e25;--card2:#232833;--bd:#2c323d;--tx:#e8ebf0;--mu:#8b93a1;--pr:#5b9cf5;--pr2:#4a86de;--prt:#0b1220;--dg:#ef6b6b;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#090c13;--card:#ffffff0b;--card2:#ffffff14;--fld:#05070ca6;--bd:#ffffff18;--tx:#eef1f7;--mu:#98a1b5;--pr:#6aa8ff;--pr2:#7b7dff;--prt:#07101f;--dg:#ff7a85;--ok:#4ade9c;--am:#fbbf4a;--fn:Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{background:var(--bg)}
-body{margin:auto;max-width:640px;background:var(--bg);color:var(--tx);font:16px/1.45 Inter,"Segoe UI",Roboto,system-ui,sans-serif;padding:14px 14px 100px;-webkit-font-smoothing:antialiased}
-h1{font-size:24px;font-weight:700;letter-spacing:-.01em;margin:10px 0 16px}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px;margin-bottom:12px}
+html{min-height:100%;background:#090c13 radial-gradient(900px 520px at 5% -8%,#23458a66,transparent 62%),radial-gradient(760px 520px at 105% 8%,#6a3fc055,transparent 58%),radial-gradient(900px 600px at 50% 118%,#0e7a8a44,transparent 62%) fixed}
+body{margin:auto;max-width:640px;color:var(--tx);font:500 16px/1.45 var(--fn);padding:14px 14px 120px;-webkit-font-smoothing:antialiased}
+h1{font:600 21px/1.25 Unbounded,var(--fn);letter-spacing:-.02em;margin:10px 0 16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:16px;margin-bottom:12px;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 8px 30px #0005}
 .card>label:first-child{margin-top:0}
-button{font:inherit;font-weight:600;min-height:52px;border-radius:14px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);padding:0 18px;transition:background .15s,transform .06s,border-color .15s}
-button:active{transform:scale(.98);background:#2d3441}
+button{font:700 15px var(--fn);min-height:52px;border-radius:16px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);padding:0 16px;transition:background .15s,transform .06s,box-shadow .15s}
+button:active{transform:scale(.97);background:#ffffff26}
 button:focus-visible,input:focus-visible{outline:2px solid var(--pr);outline-offset:2px}
-.b{background:var(--pr);color:var(--prt);border-color:transparent}.b:active{background:var(--pr2)}
-.d{color:var(--dg);background:#ef6b6b14;border-color:#ef6b6b40}.d:active{background:#ef6b6b2a}
+.b{background:linear-gradient(135deg,var(--pr),var(--pr2));color:var(--prt);border-color:transparent;box-shadow:0 6px 22px #6aa8ff40}.b:active{background:linear-gradient(135deg,#5a98ee,#6b6de8)}
+.b2{background:#6aa8ff1f;color:#b4d2ff;border-color:#6aa8ff55}
+.gh{background:transparent;color:var(--pr);border:1px dashed #6aa8ff70}
+.d{color:var(--dg);background:#ff7a8514;border-color:#ff7a8545}
 .w{width:100%}
-input,select{font:inherit;width:100%;min-height:52px;border:1px solid var(--bd);border-radius:14px;padding:0 14px;background:var(--bg2);color:var(--tx);transition:border-color .15s,box-shadow .15s}
-input::placeholder{color:#5f6775}
-input:focus{border-color:var(--pr);box-shadow:0 0 0 3px #5b9cf522;outline:none}
-label{display:block;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--mu);margin:14px 0 6px}
+input,select{font:500 16px var(--fn);width:100%;min-height:52px;border:1px solid var(--bd);border-radius:16px;padding:0 14px;background:var(--fld);color:var(--tx);-webkit-appearance:none;appearance:none;transition:border-color .15s,box-shadow .15s}
+input::placeholder{color:#626b7e}
+input:focus{border-color:var(--pr);box-shadow:0 0 0 4px #6aa8ff22;outline:none}
+label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:14px 0 6px}
 .row{display:flex;gap:10px}.row>*{flex:1}
-.tabs{display:flex;gap:6px;padding:5px;background:var(--bg2);border:1px solid var(--bd);border-radius:16px;margin-bottom:12px}
-.tabs button{flex:1;border:0;background:transparent;color:var(--mu);min-height:46px}
-.tabs .on{background:var(--pr);color:var(--prt)}
+.tabs,.seg{display:flex;gap:6px;padding:5px;background:var(--fld);border:1px solid var(--bd);border-radius:18px}.tabs{margin-bottom:12px}
+.tabs button,.seg button{flex:1;border:0;background:transparent;color:var(--mu);min-height:44px;box-shadow:none}
+.tabs .on,.seg .on{background:linear-gradient(135deg,var(--pr),var(--pr2));color:var(--prt)}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:12px 0;padding-bottom:2px}.chips button{min-height:40px;white-space:nowrap;padding:0 16px;border-radius:999px;font-size:14px}
+.chips .on{background:#6aa8ff26;border-color:var(--pr);color:#c3dcff}
 .it{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.mu{color:var(--mu);font-size:14px}.big{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
-.tot{text-align:right;background:linear-gradient(180deg,#1d2634,#191e27);border-color:#2f3b50}.tot .big{font-size:20px;color:#9cc4fb}
-.bar{position:fixed;left:0;right:0;bottom:0;padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px));background:#0e1013ee;backdrop-filter:blur(10px);border-top:1px solid var(--bd);display:flex;gap:10px;max-width:640px;margin:auto}
+.mu{color:var(--mu);font-size:14px}.big{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.ttl{font-weight:800;font-size:17px}
+.st{font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;white-space:nowrap}.st0{background:#fbbf4a22;color:var(--am)}.st1{background:#6aa8ff22;color:var(--pr)}.st2{background:#4ade9c22;color:var(--ok)}
+.pg{height:6px;border-radius:6px;background:#ffffff14;margin:12px 0 6px;overflow:hidden}.pg i{display:block;height:100%;background:linear-gradient(90deg,var(--pr),var(--ok));border-radius:6px}
+.act{margin-top:12px}.act button{min-height:44px;font-size:14px;padding:0 8px}
+.itm.fin{border-color:#4ade9c55;background:#4ade9c10}
+.kd{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--pr);background:#6aa8ff1f;padding:3px 9px;border-radius:8px;margin-left:6px}
+.tot{text-align:right;background:linear-gradient(160deg,#6aa8ff1f,#7b7dff14);border-color:#6aa8ff40}.tot .big{font-size:19px;color:#b4d2ff}
+.bar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:616px;margin:auto;padding:10px;background:#0b0f19d0;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid var(--bd);border-radius:26px;display:flex;gap:8px;box-shadow:0 12px 40px #000b}
+.bar button{flex:1;padding:0 10px}
 .ov{position:fixed;inset:0;background:#000b;display:flex;align-items:flex-end;justify-content:center;z-index:9}
-.sh{background:var(--card);border:1px solid var(--bd);border-bottom:0;width:100%;max-width:640px;max-height:92%;overflow:auto;border-radius:24px 24px 0 0;padding:18px 16px calc(16px + env(safe-area-inset-bottom,0px))}
-.chk{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--tx);margin:8px 0;min-height:52px;padding:0 14px;border:1px solid var(--bd);border-radius:14px;background:var(--bg2)}
-.chk:has(input:checked){border-color:#5b9cf566;background:#5b9cf512}
-.chk input{-webkit-appearance:none;appearance:none;width:26px;height:26px;min-height:26px;flex:0 0 26px;border:2px solid #4a5160;border-radius:8px;padding:0;background:transparent;display:grid;place-content:center}
-.chk input:checked{background:var(--pr);border-color:var(--pr)}
+.sh{background:linear-gradient(180deg,#171c29,#0f131c);border:1px solid var(--bd);border-bottom:0;width:100%;max-width:640px;max-height:93%;overflow:auto;border-radius:28px 28px 0 0;padding:20px 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.chk{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:600;text-transform:none;letter-spacing:0;color:var(--tx);margin:8px 0;min-height:52px;padding:0 14px;border:1px solid var(--bd);border-radius:16px;background:var(--fld)}
+.chk:has(input:checked){border-color:#6aa8ff66;background:#6aa8ff14}
+.chk input{-webkit-appearance:none;appearance:none;width:26px;height:26px;min-height:26px;flex:0 0 26px;border:2px solid #4d566b;border-radius:9px;padding:0;background:transparent;display:grid;place-content:center}
+.chk input:checked{background:linear-gradient(135deg,var(--pr),var(--pr2));border-color:transparent}
 .chk input:checked::after{content:"";width:6px;height:12px;border:solid var(--prt);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
-.wk{margin-bottom:4px}.wk>div:last-child:not(:empty){margin:-2px 0 8px;padding:4px 12px 12px;background:var(--bg2);border:1px solid var(--bd);border-radius:14px}
-</style></head><body><div id="app"></div><div id="ov"></div>
+.wk{margin-bottom:4px}.wk>div:last-child:not(:empty){margin:-2px 0 8px;padding:4px 12px 12px;background:#0006;border:1px solid var(--bd);border-radius:16px}
+.phs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.th{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;border:1px solid var(--bd);background:var(--fld)}
+.th img{width:100%;height:100%;object-fit:cover;display:block}.th span{position:absolute;left:6px;bottom:6px;font-size:11px;font-weight:700;background:#000b;padding:2px 8px;border-radius:8px}
+.th button{position:absolute;right:4px;top:4px;min-height:30px;width:30px;padding:0;border-radius:10px;background:#000b;color:#fff;border:0}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:110px;background:#1b2231;border:1px solid var(--bd);padding:12px 18px;border-radius:14px;z-index:20;box-shadow:0 8px 30px #000a;font-weight:700}
+</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" crossorigin href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600&display=swap"></head><body><div id="app"></div><div id="ov"></div>
 <script>
-const KEY='otkosy-v1';let S={objs:[],cur:null,tab:'in'};
+const KEY='otkosy-v1';let S={objs:[],cur:null,tab:'in',q:'',sort:'new',st:''};
 try{const r=localStorage.getItem(KEY);if(r)S.objs=JSON.parse(r)}catch(e){}
-try{S.objs.forEach(o=>['in','out'].forEach(k=>{o[k].nol=o[k].nol||[]}))}catch(e){}
+try{S.objs.forEach(o=>{o.st=o.st||'замер';['in','out'].forEach(k=>{o[k].nol=o[k].nol||[]})})}catch(e){}
 try{S.objs.forEach(o=>['in','out'].forEach(k=>o[k].items.forEach(i=>{if(!i.types){i.types=i.type?[i.type]:[];delete i.type}})))}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S.objs))}catch(e){}};
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -58,52 +73,77 @@ const tT=(s,t)=>{const a=s.items.filter(i=>(i.types||[]).includes(t));return isN
 const fv=(s,t)=>isN(s,t)?String(tT(s,t)):f(tT(s,t));
 function confirmBox(msg,ok){$('#ov').innerHTML=`<div class="ov"><div class="sh"><p class="big">${esc(msg)}</p><div class="row"><button onclick="closeOv()">Отмена</button><button class="b" style="background:var(--dg)" id="yes">Удалить</button></div></div></div>`;$('#yes').onclick=()=>{closeOv();ok()}}
 const closeOv=()=>$('#ov').innerHTML='';
+const DEF={in:{types:['Штукатурка','Сендвич-панели','Сендвич-панели(каркас)','Акрил','Уголок','Демонтаж'],nol:['Демонтаж']},out:{types:['Пенопласт','Покраска','Штукатурка','Контршульц'],nol:[]}},ST=['замер','в работе','сдан'],TPL='otkosy-tpl';let TP=null,DR={ph:[],add:[],rem:[]};try{TP=JSON.parse(localStorage.getItem(TPL))}catch(e){}
+const DB=new Promise(r=>{try{const q=indexedDB.open('otkosy-ph',1);q.onupgradeneeded=()=>q.result.createObjectStore('p');q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)}catch(e){r(null)}});
+const pdb=(m,k,v)=>DB.then(d=>d?new Promise(r=>{const t=d.transaction('p',m==='get'?'readonly':'readwrite').objectStore('p'),q=m==='get'?t.get(k):m==='put'?t.put(v,k):t.delete(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)}):null);
+const toast=m=>{const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2200)};
+const slots=o=>{let n=0,d=0;['in','out'].forEach(k=>o[k].items.forEach(i=>{const T=i.types||[];n+=T.length;d+=T.filter(t=>i.done&&i.done[t]).length}));return[n,d]};
 function render(){const a=$('#app');S.cur?objView(a):listView(a)}
-function listView(a){
- a.innerHTML=`<h1>Замеры откосов</h1>`+(S.objs.length?'':'<div class="card mu">Объектов пока нет. Нажмите «Новый объект».</div>')+
- S.objs.map(o=>`<div class="card it"><div onclick="openObj('${o.id}')" style="flex:1"><b>${esc(o.name)||'Без названия'}</b><div class="mu">${o.client?esc(o.client)+' · ':''}${fd(o.date)} · В: ${o.in.items.length}, Н: ${o.out.items.length}</div></div><button class="d" onclick="delObj('${o.id}')">✕</button></div>`).join('')+
- `<div class="bar"><button class="b w" onclick="newObj()">+ Новый объект</button></div>`}
-function newObj(){const o={id:uid(),name:'',client:'',phone:'',date:today(),in:{w:'',types:['Штукатурка','Сендвич-панели','Сендвич-панели(каркас)','Акрил','Уголок','Демонтаж'],nol:['Демонтаж'],items:[]},out:{w:'',types:['Пенопласт','Покраска','Штукатурка','Контршульц'],nol:[],items:[]}};S.objs.unshift(o);S.cur=o.id;S.tab='in';save();render()}
+function listView(a){a.innerHTML=`<h1>Замеры откосов</h1><input id="q" type="search" placeholder="Поиск: адрес, заказчик, телефон" value="${esc(S.q)}">
+<div class="chips">${['',...ST].map(t=>`<button class="${S.st===t?'on':''}" onclick="S.st='${t}';listView($('#app'))">${t||'Все'}</button>`).join('')}<button onclick="S.sort=S.sort=='new'?'old':'new';listView($('#app'))">${S.sort=='new'?'Новые ↓':'Старые ↑'}</button></div>
+<div id="lst"></div><div class="bar"><button class="b" onclick="newObj()">+ Новый объект</button></div>`;
+$('#q').oninput=e=>{S.q=e.target.value;fillList()};fillList()}
+function fillList(){const q=S.q.trim().toLowerCase(),L=S.objs.filter(o=>(!S.st||o.st===S.st)&&(!q||[o.name,o.client,o.phone].join(' ').toLowerCase().includes(q))).sort((a,b)=>(a.date<b.date?1:a.date>b.date?-1:0)*(S.sort=='new'?1:-1));
+$('#lst').innerHTML=L.length?L.map(o=>{const[n,d]=slots(o);return `<div class="card"><div class="it"><div onclick="openObj('${o.id}')" style="flex:1"><div class="ttl">${esc(o.name)||'Без названия'}</div><div class="mu">${o.client?esc(o.client)+' · ':''}${fd(o.date)}</div><div class="mu">Внутр. ${o.in.items.length} · Нар. ${o.out.items.length}</div></div><span class="st st${ST.indexOf(o.st)}">${esc(o.st)}</span></div>${n?`<div class="pg"><i style="width:${Math.round(d/n*100)}%"></i></div><div class="mu">Выполнено ${d} из ${n}</div>`:''}<div class="row act"><button onclick="openObj('${o.id}')">Открыть</button><button onclick="dupObj('${o.id}')">Копия</button><button class="d" onclick="delObj('${o.id}')">Удалить</button></div></div>`}).join(''):'<div class="card mu">Ничего не найдено. Нажмите «Новый объект».</div>'}
+function newObj(){const T=TP||DEF,mk=k=>({w:'',types:T[k].types.slice(),nol:(T[k].nol||[]).slice(),items:[]}),o={id:uid(),name:'',client:'',phone:'',date:today(),st:'замер',in:mk('in'),out:mk('out')};S.objs.unshift(o);S.cur=o.id;S.tab='in';save();render()}
 function openObj(id){S.cur=id;S.tab='in';render()}
-function delObj(id){confirmBox('Удалить объект со всеми замерами?',()=>{S.objs=S.objs.filter(o=>o.id!==id);save();render()})}
+function dupObj(id){const o=JSON.parse(JSON.stringify(S.objs.find(x=>x.id===id)));o.id=uid();o.name=(o.name||'Объект')+' (копия)';o.date=today();o.st='замер';['in','out'].forEach(k=>o[k].items.forEach(i=>{i.id=uid();i.ph=[];i.done={}}));S.objs.unshift(o);save();render();toast('Копия создана (без фото и отметок)')}
+function delObj(id){confirmBox('Удалить объект со всеми замерами?',()=>{const o=S.objs.find(x=>x.id===id);['in','out'].forEach(k=>o[k].items.forEach(i=>(i.ph||[]).forEach(p=>pdb('del',p.id))));S.objs=S.objs.filter(x=>x.id!==id);save();render()})}
+function saveTpl(){const o=cur();TP={in:{types:o.in.types.slice(),nol:(o.in.nol||[]).slice()},out:{types:o.out.types.slice(),nol:(o.out.nol||[]).slice()}};try{localStorage.setItem(TPL,JSON.stringify(TP))}catch(e){}toast('Шаблон сохранён: будет у новых объектов')}
 function objView(a){const o=cur(),s=sec();
- a.innerHTML=`<div class="row" style="margin-bottom:8px"><button onclick="S.cur=null;render()" style="flex:0 0 auto">← Назад</button></div>
+ a.innerHTML=`<div class="row" style="margin-bottom:10px"><button onclick="S.cur=null;render()" style="flex:0 0 auto">← Назад</button></div>
  <div class="card"><label>Название или адрес</label><input id="nm" value="${esc(o.name)}" placeholder="ул. Ленина, 5, кв. 12">
- <label>Дата замеров</label><input id="dt" type="date" value="${esc(o.date)}"><label>Заказчик (ФИО)</label><input id="cl" value="${esc(o.client)}" placeholder="Иванов Иван Иванович" autocomplete="name"><label>Телефон заказчика</label><input id="ph" type="tel" inputmode="tel" value="${esc(o.phone)}" placeholder="+7 900 000-00-00" autocomplete="tel"></div>
+ <label>Дата замеров</label><input id="dt" type="date" value="${esc(o.date)}">
+ <label>Заказчик (ФИО)</label><input id="cl" value="${esc(o.client)}" placeholder="Иванов Иван Иванович" autocomplete="name">
+ <label>Телефон заказчика</label><input id="phn" type="tel" inputmode="tel" value="${esc(o.phone)}" placeholder="+7 900 000-00-00" autocomplete="tel">
+ <label>Статус объекта</label><div class="seg">${ST.map(t=>`<button class="${o.st===t?'on':''}" onclick="cur().st='${t}';save();render()">${t}</button>`).join('')}</div></div>
  <div class="tabs"><button class="${S.tab=='in'?'on':''}" onclick="S.tab='in';render()">Внутренние</button><button class="${S.tab=='out'?'on':''}" onclick="S.tab='out';render()">Наружные</button></div>
  <div class="card">${S.tab=='in'?`<label>Ширина откосов, мм (внутренние работы)</label><input id="sw" inputmode="decimal" value="${esc(s.w)}">`:''}
- <label>Виды работ: ${s.types.length?esc(s.types.join(', ')):'не заданы'}</label>
+ <label>Виды работ</label>
  <div class="row"><input id="nt" placeholder="Новый вид работ"><button onclick="addType()" style="flex:0 0 auto">Добавить</button></div><label class="chk"><input type="checkbox" id="nn"><span>Без погонажа (просто работа, считается в шт.)</span></label>
- ${s.types.map((t,k)=>`<div class="row" style="margin-top:6px"><button style="min-height:44px;text-align:left" onclick="renType(${k})">✎ ${esc(t)}${isN(s,t)?' (шт)':''}</button><button class="d" style="min-height:44px;flex:0 0 56px" onclick="delType(${k})">✕</button></div>`).join('')}</div>
- ${s.items.map((i,k)=>`<div class="card it"><div onclick="editItem('${i.id}')" style="flex:1"><b>В${k+1}</b> <div class="mu">${(i.types||[]).length?i.types.map(t=>esc(t)+(isN(s,t)?' ✓':' '+f(lmT(i,t)))+(i.ov&&i.ov[t]&&Object.values(i.ov[t]).some(v=>v!=='')?'*':'')).join(' · '):'работа не выбрана'}</div><div class="mu">${i.l||0} / ${i.r||0} / ${i.t||0} мм${i.w?' · откос '+esc(i.w):''}</div>${i.note?`<div class="mu">${esc(i.note)}</div>`:''}</div><div class="big">${(i.types||[]).length?'':f(lm(i))}</div></div>`).join('')}
+ ${s.types.map((t,k)=>`<div class="row" style="margin-top:6px"><button style="min-height:44px;text-align:left" onclick="renType(${k})">✎ ${esc(t)}${isN(s,t)?' (шт)':''}</button><button class="d" style="min-height:44px;flex:0 0 56px" onclick="delType(${k})">✕</button></div>`).join('')}
+ <button class="gh w" style="margin-top:12px;min-height:44px" onclick="saveTpl()">Сохранить виды работ как шаблон</button></div>
+ ${s.items.map((i,k)=>{const T=i.types||[];return `<div class="card it itm${T.length&&T.every(t=>i.done&&i.done[t])?' fin':''}"><div onclick="editItem('${i.id}')" style="flex:1"><b>В${k+1}</b><span class="kd">${esc(i.kind||'окно')}</span>${(i.ph||[]).length?` <span class="mu">📷${i.ph.length}</span>`:''}<div class="mu">${T.length?T.map(t=>esc(t)+(isN(s,t)?' (шт)':' '+f(lmT(i,t)))+(i.done&&i.done[t]?' ✔':'')+(i.ov&&i.ov[t]&&Object.values(i.ov[t]).some(v=>v!=='')?'*':'')).join(' · '):'работа не выбрана'}</div><div class="mu">${i.l||0} / ${i.r||0} / ${i.t||0} мм${i.w?' · откос '+esc(i.w):''}</div>${i.note?`<div class="mu">${esc(i.note)}</div>`:''}</div><div class="big">${T.length?'':f(lm(i))}</div></div>`}).join('')}
  <div class="card tot"><div class="mu">Итого: ${SN[S.tab].toLowerCase()}</div>${s.types.length?s.types.map(t=>`<div class="big">${esc(t)}: ${fv(s,t)} ${un(s,t)}</div>`).join(''):'<div class="mu">Добавьте вид работ</div>'}</div>
- <div class="bar"><button class="b" style="flex:2" onclick="editItem()">+ Окно / дверь</button><button onclick="exportMenu()">Экспорт</button></div>`;
- $('#nm').oninput=e=>{o.name=e.target.value;save()};$('#dt').oninput=e=>{o.date=e.target.value;save()};$('#cl').oninput=e=>{o.client=e.target.value;save()};$('#ph').oninput=e=>{o.phone=e.target.value;save()};if($('#sw'))$('#sw').oninput=e=>{s.w=e.target.value;save()}}
+ <div class="bar"><button class="b" onclick="editItem('','окно')">+ Окно</button><button class="b2" onclick="editItem('','дверь')">+ Дверь</button><button style="flex:0 0 auto" onclick="exportMenu()">Экспорт</button></div>`;
+ $('#nm').oninput=e=>{o.name=e.target.value;save()};$('#dt').oninput=e=>{o.date=e.target.value;save()};$('#cl').oninput=e=>{o.client=e.target.value;save()};$('#phn').oninput=e=>{o.phone=e.target.value;save()};if($('#sw'))$('#sw').oninput=e=>{s.w=e.target.value;save()}}
 function renType(k){const t=sec().types[k];$('#ov').innerHTML=`<div class="ov"><div class="sh"><h1>Переименовать работу</h1><input id="rn" value="${esc(t)}"><div class="row" style="margin-top:14px"><button onclick="closeOv()">Отмена</button><button class="b" onclick="doRen(${k})">Сохранить</button></div></div></div>`}
 function doRen(k){const s=sec(),t=s.types[k],v=$('#rn').value.trim();if(!v||(v!==t&&s.types.includes(v))){closeOv();return}
- s.types[k]=v;s.nol=(s.nol||[]).map(x=>x===t?v:x);s.items.forEach(i=>{i.types=(i.types||[]).map(x=>x===t?v:x);if(i.ov&&i.ov[t]&&v!==t){i.ov[v]=i.ov[t];delete i.ov[t]}});save();closeOv();render()}
+ s.types[k]=v;s.nol=(s.nol||[]).map(x=>x===t?v:x);s.items.forEach(i=>{i.types=(i.types||[]).map(x=>x===t?v:x);if(v!==t){if(i.ov&&i.ov[t]){i.ov[v]=i.ov[t];delete i.ov[t]}if(i.done&&i.done[t]){i.done[v]=i.done[t];delete i.done[t]}}});save();closeOv();render()}
 function addType(){const v=$('#nt').value.trim(),s=sec();if(v&&!s.types.includes(v)){s.types.push(v);if($('#nn').checked)(s.nol=s.nol||[]).push(v);save();render()}}
-function delType(k){const s=sec(),t=s.types[k];confirmBox(`Удалить вид работ «${t}»?`,()=>{s.types=s.types.filter(x=>x!==t);s.nol=(s.nol||[]).filter(x=>x!==t);s.items.forEach(i=>{i.types=(i.types||[]).filter(x=>x!==t)});save();render()})}
-function editItem(id){const s=sec(),it=s.items.find(i=>i.id===id)||{id:'',l:'',r:'',t:'',w:S.tab=='in'?s.w:'',note:'',types:[],ov:{}};const n=id?s.items.indexOf(it)+1:s.items.length+1;
- const fld=(k,l)=>`<div><label>${l}</label><input id="f${k}" inputmode="decimal" value="${esc(it[k])}" oninput="pv()"></div>`;
- $('#ov').innerHTML=`<div class="ov"><div class="sh"><div class="it"><h1 style="margin:0">В${n}</h1><div class="big" id="pv"></div></div>
+function delType(k){const s=sec(),t=s.types[k];confirmBox(`Удалить вид работ «${t}»?`,()=>{s.types=s.types.filter(x=>x!==t);s.nol=(s.nol||[]).filter(x=>x!==t);s.items.forEach(i=>{i.types=(i.types||[]).filter(x=>x!==t);if(i.done)delete i.done[t]});save();render()})}
+function editItem(id,kind){const s=sec(),ex=s.items.find(i=>i.id===id),it=ex||{id:'',l:'',r:'',t:'',w:S.tab=='in'?s.w:'',note:'',types:[],ov:{},done:{},ph:[],kind:kind||'окно'},n=ex?s.items.indexOf(ex)+1:s.items.length+1;
+ DR={ph:(it.ph||[]).slice(),add:[],rem:[],kind:it.kind||'окно'};
+ const fld=(k,l)=>`<div><label>${l}</label><input id="f${k}" inputmode="decimal" enterkeyhint="next" value="${esc(it[k])}" oninput="pv()"></div>`;
+ $('#ov').innerHTML=`<div class="ov"><div class="sh" onkeydown="nx(event)"><div class="it"><h1 style="margin:0">В${n} · ${esc(DR.kind)}</h1><div class="big" id="pv"></div></div>
+ ${!ex&&s.items.length?`<button class="gh w" style="margin-top:12px" onclick="copyPrev()">↩ Размеры как у В${s.items.length}</button>`:''}
  <div class="row">${fld('l','Левая, мм')}${fld('r','Правая, мм')}</div><div class="row">${fld('t','Верхняя, мм')}${fld('w','Ширина откоса, мм')}</div>
- <label>Примечание</label><input id="fnote" value="${esc(it.note)}">
- ${s.types.length?`<label>Виды работ (можно несколько)</label>${s.types.map((t,k)=>{const o=(it.ov||{})[t]||{},on=(it.types||[]).includes(t),inp=(q,l)=>`<div><label>${l}</label><input data-k="${k}" data-f="${q}" inputmode="decimal" value="${esc(o[q]??'')}" oninput="pv()"></div>`;return `<div class="wk"><label class="chk"><input type="checkbox" value="${k}" ${on?'checked':''} onchange="pv()"><span>${esc(t)}</span><b id="wl${k}" style="margin-left:auto"></b></label><div style="display:${on?'block':'none'}" id="wo${k}">${isN(s,t)?'':`<div class="mu">Свои размеры для этой работы, мм (пусто = как у окна)</div><div class="row">${inp('l','Левая')}${inp('r','Правая')}</div><div class="row">${inp('t','Верхняя')}${inp('w','Ширина')}</div>`}</div></div>`}).join('')}`:''}
- <div class="row" style="margin-top:14px"><button onclick="closeOv()">Отмена</button><button class="b" onclick="saveItem('${id||''}')">Сохранить</button></div>
- ${id?`<button class="d w" style="margin-top:8px" onclick="delItem('${id}')">Удалить замер</button>`:''}</div></div>`;pv()}
+ <label>Примечание</label><input id="fnote" enterkeyhint="done" value="${esc(it.note)}">
+ ${s.types.length?`<label>Виды работ (можно несколько)</label>${s.types.map((t,k)=>{const o=(it.ov||{})[t]||{},on=(it.types||[]).includes(t),inp=(q,l)=>`<div><label>${l}</label><input data-k="${k}" data-f="${q}" inputmode="decimal" enterkeyhint="next" value="${esc(o[q]??'')}" oninput="pv()"></div>`;return `<div class="wk"><label class="chk"><input type="checkbox" value="${k}" ${on?'checked':''} onchange="pv()"><span>${esc(t)}</span><b id="wl${k}" style="margin-left:auto"></b></label><div style="display:${on?'block':'none'}" id="wo${k}"><label class="chk"><input type="checkbox" data-d="${k}" ${(it.done||{})[t]?'checked':''}><span>Выполнено</span></label>${isN(s,t)?'':`<div class="mu">Свои размеры для этой работы, мм (пусто = как у окна)</div><div class="row">${inp('l','Левая')}${inp('r','Правая')}</div><div class="row">${inp('t','Верхняя')}${inp('w','Ширина')}</div>`}</div></div>`}).join('')}`:''}
+ <label>Фото</label><div class="row"><button onclick="pick('до')">📷 До</button><button onclick="pick('после')">📷 После</button></div><div id="phs" class="phs"></div><input type="file" accept="image/*" id="pf" hidden onchange="addPh(event)">
+ <div style="margin-top:18px">${ex?`<div class="row"><button class="b" onclick="saveItem('${id}')">Сохранить</button><button onclick="dupItem('${id}')">Дублировать</button></div><div class="row" style="margin-top:8px"><button onclick="cancelItem()">Отмена</button><button class="d" onclick="delItem('${id}')">Удалить</button></div>`:`<div class="row"><button class="b" onclick="saveItem('')">Сохранить</button><button class="b2" onclick="saveItem('',1)">Сохранить + ещё</button></div><button class="w" style="margin-top:8px" onclick="cancelItem()">Отмена</button>`}</div></div></div>`;pv();showPh()}
 function pv(){const g=k=>$('#f'+k).value;$('#pv').textContent=f(lm({l:g('l'),r:g('r'),t:g('t')}))+' м.п.';
-document.querySelectorAll('#ov [data-f]').forEach(e=>e.placeholder=g(e.dataset.f)||'0');
-sec().types.forEach((t,k)=>{const c=document.querySelector(`#ov input[type=checkbox][value="${k}"]`);if(!c)return;$('#wo'+k).style.display=c.checked?'block':'none';if(isN(sec(),t)){$('#wl'+k).textContent=c.checked?'✓':'';return}
-const v=q=>{const e=document.querySelector(`#ov [data-k="${k}"][data-f="${q}"]`).value.trim();return e!==''?e:g(q)};$('#wl'+k).textContent=c.checked?f(lm({l:v('l'),r:v('r'),t:v('t')})):''})}
-function ovOf(s){const o={};document.querySelectorAll('#ov input[type=checkbox]:checked').forEach(c=>{if(isN(s,s.types[+c.value]))return;const r={};['l','r','t','w'].forEach(q=>{r[q]=document.querySelector(`#ov [data-k="${c.value}"][data-f="${q}"]`).value.trim()});o[s.types[+c.value]]=r});return o}
-function saveItem(id){const s=sec(),g=k=>$('#f'+k).value.trim();const d={l:g('l'),r:g('r'),t:g('t'),w:g('w'),note:$('#fnote').value.trim(),types:[...document.querySelectorAll('#ov input[type=checkbox]:checked')].map(c=>s.types[+c.value]),ov:ovOf(s)};
- if(id)Object.assign(s.items.find(i=>i.id===id),d);else s.items.push({id:uid(),...d});save();closeOv();render()}
-function delItem(id){confirmBox('Удалить этот замер?',()=>{const s=sec();s.items=s.items.filter(i=>i.id!==id);save();render()})}
+ document.querySelectorAll('#ov [data-f]').forEach(e=>e.placeholder=g(e.dataset.f)||'0');
+ sec().types.forEach((t,k)=>{const c=document.querySelector(`#ov input[type=checkbox][value="${k}"]`);if(!c)return;$('#wo'+k).style.display=c.checked?'block':'none';if(isN(sec(),t)){$('#wl'+k).textContent=c.checked?'✓':'';return}
+ const v=q=>{const e=document.querySelector(`#ov [data-k="${k}"][data-f="${q}"]`).value.trim();return e!==''?e:g(q)};$('#wl'+k).textContent=c.checked?f(lm({l:v('l'),r:v('r'),t:v('t')})):''})}
+function ovOf(s){const o={};document.querySelectorAll('#ov input[type=checkbox][value]:checked').forEach(c=>{const t=s.types[+c.value];if(isN(s,t))return;const r={};['l','r','t','w'].forEach(q=>{r[q]=document.querySelector(`#ov [data-k="${c.value}"][data-f="${q}"]`).value.trim()});o[t]=r});return o}
+function copyPrev(){const s=sec(),p=s.items[s.items.length-1];['l','r','t','w'].forEach(k=>$('#f'+k).value=p[k]||'');pv()}
+function nx(e){if(e.key!=='Enter'||e.target.tagName!=='INPUT'||e.target.type==='checkbox')return;e.preventDefault();const L=[...document.querySelectorAll('#ov input:not([type=checkbox]):not([type=file])')].filter(x=>x.offsetParent),i=L.indexOf(e.target);L[i+1]?L[i+1].focus():e.target.blur()}
+function saveItem(id,more){const s=sec(),g=k=>$('#f'+k).value.trim(),T=[...document.querySelectorAll('#ov input[type=checkbox][value]:checked')].map(c=>s.types[+c.value]),dn={},kd=DR.kind;
+ document.querySelectorAll('#ov input[data-d]:checked').forEach(c=>{const t=s.types[+c.dataset.d];if(T.includes(t))dn[t]=true});
+ const d={l:g('l'),r:g('r'),t:g('t'),w:g('w'),note:$('#fnote').value.trim(),types:T,ov:ovOf(s),done:dn,ph:DR.ph,kind:kd};DR.rem.forEach(p=>pdb('del',p));
+ if(id)Object.assign(s.items.find(i=>i.id===id),d);else s.items.push({id:uid(),...d});save();closeOv();render();if(more)editItem('',kd)}
+function dupItem(id){const s=sec(),it=s.items.find(i=>i.id===id),c=JSON.parse(JSON.stringify(it));c.id=uid();c.ph=[];c.done={};s.items.push(c);DR.add.forEach(x=>pdb('del',x));save();closeOv();render();editItem(c.id)}
+function delItem(id){confirmBox('Удалить этот замер?',()=>{const s=sec(),it=s.items.find(i=>i.id===id);(it.ph||[]).forEach(p=>pdb('del',p.id));s.items=s.items.filter(i=>i.id!==id);save();render()})}
+function cancelItem(){DR.add.forEach(x=>pdb('del',x));closeOv()}
+function pick(k){DR.pk=k;$('#pf').value='';$('#pf').click()}
+function addPh(e){const fl=e.target.files[0];if(!fl)return;const im=new Image(),u=URL.createObjectURL(fl);im.onload=()=>{const r=Math.min(1,1100/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*r;c.height=im.height*r;c.getContext('2d').drawImage(im,0,0,c.width,c.height);c.toBlob(b=>{const id=uid();pdb('put',id,b).then(()=>{DR.ph.push({id,k:DR.pk});DR.add.push(id);showPh()})},'image/jpeg',.72);URL.revokeObjectURL(u)};im.src=u}
+function showPh(){const h=$('#phs');h.innerHTML=DR.ph.map((p,i)=>`<div class="th"><img id="im${i}" alt=""><span>${esc(p.k)}</span><button onclick="rmPh(${i})">✕</button></div>`).join('');DR.ph.forEach((p,i)=>pdb('get',p.id).then(b=>{const m=$('#im'+i);if(b&&m)m.src=URL.createObjectURL(b)}))}
+function rmPh(i){const p=DR.ph.splice(i,1)[0];DR.rem.push(p.id);showPh()}
 function exportMenu(){$('#ov').innerHTML=`<div class="ov"><div class="sh"><h1>Экспорт ведомости</h1><button class="b w" onclick="doXlsx()">Excel (.xlsx)</button><button class="b w" style="margin-top:8px" onclick="doPdf()">PDF</button><button class="w" style="margin-top:8px" onclick="closeOv()">Закрыть</button></div></div>`}
 function rowsAll(){const o=cur(),A=[],B=[],N=v=>v===''||v==null?'':+v||0;['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';
- s.items.forEach((i,n)=>{const T=i.types||[];if(!T.length)A.push([sn,'В'+(n+1),'',N(i.l),N(i.r),N(i.t),N(i.w),+lm(i).toFixed(3),i.note||'']);
-  T.forEach(t=>A.push(isN(s,t)?[sn,'В'+(n+1),t,'','','','','',i.note||'']:[sn,'В'+(n+1),t,N(eff(i,t,'l')),N(eff(i,t,'r')),N(eff(i,t,'t')),N(eff(i,t,'w')),+lmT(i,t).toFixed(3),i.note||'']))});
+ s.items.forEach((i,n)=>{const T=i.types||[];if(!T.length)A.push([sn,'В'+(n+1),i.kind||'окно','',N(i.l),N(i.r),N(i.t),N(i.w),+lm(i).toFixed(3),i.note||'']);
+  T.forEach(t=>A.push(isN(s,t)?[sn,'В'+(n+1),i.kind||'окно',t,'','','','','',i.note||'']:[sn,'В'+(n+1),i.kind||'окно',t,N(eff(i,t,'l')),N(eff(i,t,'r')),N(eff(i,t,'t')),N(eff(i,t,'w')),+lmT(i,t).toFixed(3),i.note||'']))});
  s.types.forEach(t=>B.push([sn,t,+tT(s,t).toFixed(3),isN(s,t)?'шт':'пог. м',k=='in'?N(s.w):'']))});return[A,B,o]}
 const fname=ext=>'Ведомость_'+(cur().name||'объект').replace(/[^\wа-яё]+/gi,'_').slice(0,40)+'.'+ext;
 function out(name,data){const b=data instanceof Blob?data:new Blob([data]);const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);closeOv()}
@@ -117,11 +157,11 @@ C.push(g.buffer,nb);o+=30+nb.length+d.length});
 let cl=0;C.forEach(x=>cl+=x.byteLength);
 const e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,F.length,true);e.setUint16(10,F.length,true);e.setUint32(12,cl,true);e.setUint32(16,o,true);
 return new Blob([...P,...C,e.buffer])}
-function xmlSheet(R,W){const L='ABCDEFGHI',x2=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function xmlSheet(R,W){const L='ABCDEFGHIJ',x2=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const rows=R.map((r,i)=>`<row r="${i+1}">`+r.map((v,j)=>v===''||v==null?'':typeof v==='number'?`<c r="${L[j]}${i+1}"><v>${v}</v></c>`:`<c r="${L[j]}${i+1}" t="inlineStr"><is><t xml:space="preserve">${x2(v)}</t></is></c>`).join('')+'</row>').join('');
 return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><cols>'+W.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols><sheetData>'+rows+'</sheetData></worksheet>'}
 function doXlsx(){const[A,B,o]=rowsAll(),H0='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
-const S=[['Замеры',[['Раздел','№','Работа','Левая, мм','Правая, мм','Верх, мм','Ширина откоса, мм','Пог. м','Примечание'],...A],[11,6,18,10,10,10,14,9,24]],
+const S=[['Замеры',[['Раздел','№','Тип','Работа','Левая, мм','Правая, мм','Верх, мм','Ширина откоса, мм','Пог. м','Примечание'],...A],[11,6,9,18,10,10,10,14,9,24]],
 ['Итоги',[['Раздел','Работа','Итого','Ед.','Ширина откосов раздела, мм'],...B],[11,20,10,8,18]],
 ['Объект',[['Объект',o.name||''],['Заказчик',o.client||''],['Телефон',o.phone||''],['Дата',fd(o.date)]],[12,34]]];
 const R='http://schemas.openxmlformats.org/officeDocument/2006/relationships';
@@ -134,7 +174,7 @@ out(fname('xlsx'),mkzip([
 function drawCard(g,cx,cy,title,i,T,COL,NL){const rw=230,rh=170,rx=cx+170,ry=cy+140,nm=v=>+v||0,ra=(v,b)=>{b=+b||0;v=+v||0;return b>0?Math.min(1,v/b):1},ln=(a,b,c,d)=>{g.beginPath();g.moveTo(a,b);g.lineTo(c,d);g.stroke()};
  g.strokeStyle='#888';g.lineWidth=2;g.strokeRect(cx,cy,570,520);
  g.textAlign='left';g.fillStyle='#000';g.font='bold 28px sans-serif';g.fillText(title,cx+14,cy+36);g.font='18px sans-serif';g.fillStyle='#555';g.fillText((i.note||'').slice(0,40),cx+90,cy+36);
- g.fillStyle='#e8f1fb';g.fillRect(rx,ry,rw,rh);g.strokeStyle='#444';g.lineWidth=4;g.strokeRect(rx,ry,rw,rh);g.lineWidth=2;g.strokeRect(rx+12,ry+12,rw-24,rh-24);ln(rx+rw/2,ry+12,rx+rw/2,ry+rh-12);
+ g.fillStyle='#e8f1fb';g.fillRect(rx,ry,rw,rh);g.strokeStyle='#444';g.lineWidth=4;g.strokeRect(rx,ry,rw,rh);g.lineWidth=2;g.strokeRect(rx+12,ry+12,rw-24,rh-24);if(i.kind=='дверь'){g.fillStyle='#444';g.beginPath();g.arc(rx+rw-34,ry+rh/2,8,0,6.3);g.fill()}else ln(rx+rw/2,ry+12,rx+rw/2,ry+rh-12);
  T.forEach((t,k)=>{if(NL.includes(t))return;const d=8+k*8,L=eff(i,t,'l'),R=eff(i,t,'r'),Tt=eff(i,t,'t');g.strokeStyle=COL[k];g.lineWidth=5;
   ln(rx-d,ry-d,rx-d,ry-d+(rh+d)*ra(L,i.l));ln(rx-d,ry-d,rx-d+(rw+2*d)*ra(Tt,i.t),ry-d);ln(rx+rw+d,ry-d,rx+rw+d,ry-d+(rh+d)*ra(R,i.r))});
  const dl=rx-70,dr=rx+rw+70,dt=ry-70;g.strokeStyle='#000';g.lineWidth=2;g.fillStyle='#000';g.font='bold 20px sans-serif';
@@ -167,7 +207,7 @@ function doPdf(){const o=cur(),W=1240,Hh=1754,pages=[],COL=['#1f6feb','#d1242f',
    R.forEach(r=>{if(y>Hh-100)np();const v=n=>r.u=='шт'?(n?n+' шт':'—'):(n?f(n)+' м.п.':'—');cl(50,470,r.t.slice(0,34),1);cl(520,200,v(r.in));cl(720,200,v(r.out));cl(920,220,v(r.in+r.out),1,'#f3f3f3');y+=46})}}
  ['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';if(!s.items.length)return;
   s.items.forEach((i,n)=>{const p=n%6;if(p==0){np();tx('Схемы: '+sn.toLowerCase()+' работы'+(n?' (продолжение)':''),50,y,30,1,'#1f6feb');y=130}
-   drawCard(x,50+(p%2)*570,y+Math.floor(p/2)*520,'В'+(n+1),i,(i.types||[]).slice(0,6),COL,s.nol||[])})});
+   drawCard(x,50+(p%2)*570,y+Math.floor(p/2)*520,'В'+(n+1)+' · '+(i.kind||'окно'),i,(i.types||[]).slice(0,6),COL,s.nol||[])})});
  const E=new TextEncoder(),P=[],off=[];let L=0;const add=b=>{if(typeof b=='string')b=E.encode(b);P.push(b);L+=b.length};
  const jp=pages.map(cv=>{const b=atob(cv.toDataURL('image/jpeg',.85).split(',')[1]);return Uint8Array.from(b,ch=>ch.charCodeAt(0))});
  const obj=(n,s)=>{off[n]=L;add(n+' 0 obj\n'+s+'\nendobj\n')};add('%PDF-1.4\n');
