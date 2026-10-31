@@ -18,7 +18,7 @@ label{display:block;font-size:14px;color:var(--mu);margin:8px 0 3px}.row{display
 .bar{position:fixed;left:0;right:0;bottom:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--bd);display:flex;gap:8px;max-width:640px;margin:auto}
 .ov{position:fixed;inset:0;background:#0009;display:flex;align-items:flex-end;justify-content:center;z-index:9}
 .sh{background:var(--card);width:100%;max-width:640px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px))}
-.tot{text-align:right}.chk{display:flex;align-items:center;gap:12px;font-size:17px;color:var(--tx);margin:6px 0;min-height:48px;padding:0 12px;border:1px solid var(--bd);border-radius:12px;background:var(--bg)}.chk input{width:26px;height:26px;min-height:26px;flex:0 0 auto}
+.tot{text-align:right}.wk{margin-bottom:4px}.wk>div:last-child{padding:0 4px 8px}.chk{display:flex;align-items:center;gap:12px;font-size:17px;color:var(--tx);margin:6px 0;min-height:48px;padding:0 12px;border:1px solid var(--bd);border-radius:12px;background:var(--bg)}.chk input{width:26px;height:26px;min-height:26px;flex:0 0 auto}
 </style></head><body><div id="app"></div><div id="ov"></div>
 <script>
 const KEY='otkosy-v1';let S={objs:[],cur:null,tab:'in'};
@@ -32,13 +32,15 @@ const cur=()=>S.objs.find(o=>o.id===S.cur),sec=()=>cur()[S.tab];
 const SN={in:'Внутренние работы',out:'Наружные работы'};
 const today=()=>new Date().toISOString().slice(0,10);
 const fd=d=>d?d.split('-').reverse().join('.'):'';
-const tot=s=>s.items.reduce((a,i)=>a+lm(i),0);
+const eff=(i,t,k)=>{const v=i.ov&&i.ov[t]?i.ov[t][k]:'';return v!==''&&v!=null?v:i[k]};
+const lmT=(i,t)=>lm({l:eff(i,t,'l'),r:eff(i,t,'r'),t:eff(i,t,'t')});
+const tT=(s,t)=>s.items.filter(i=>(i.types||[]).includes(t)).reduce((a,i)=>a+lmT(i,t),0);
 function confirmBox(msg,ok){$('#ov').innerHTML=`<div class="ov"><div class="sh"><p class="big">${esc(msg)}</p><div class="row"><button onclick="closeOv()">Отмена</button><button class="b" style="background:var(--dg)" id="yes">Удалить</button></div></div></div>`;$('#yes').onclick=()=>{closeOv();ok()}}
 const closeOv=()=>$('#ov').innerHTML='';
 function render(){const a=$('#app');S.cur?objView(a):listView(a)}
 function listView(a){
  a.innerHTML=`<h1>Замеры откосов</h1>`+(S.objs.length?'':'<div class="card mu">Объектов пока нет. Нажмите «Новый объект».</div>')+
- S.objs.map(o=>`<div class="card it"><div onclick="openObj('${o.id}')" style="flex:1"><b>${esc(o.name)||'Без названия'}</b><div class="mu">${o.client?esc(o.client)+' · ':''}${fd(o.date)} · В: ${o.in.items.length}, Н: ${o.out.items.length} · ${f(tot(o.in)+tot(o.out))} м.п.</div></div><button class="d" onclick="delObj('${o.id}')">✕</button></div>`).join('')+
+ S.objs.map(o=>`<div class="card it"><div onclick="openObj('${o.id}')" style="flex:1"><b>${esc(o.name)||'Без названия'}</b><div class="mu">${o.client?esc(o.client)+' · ':''}${fd(o.date)} · В: ${o.in.items.length}, Н: ${o.out.items.length}</div></div><button class="d" onclick="delObj('${o.id}')">✕</button></div>`).join('')+
  `<div class="bar"><button class="b w" onclick="newObj()">+ Новый объект</button></div>`}
 function newObj(){const o={id:uid(),name:'',client:'',phone:'',date:today(),in:{w:'',types:['Штукатурка'],items:[]},out:{w:'',types:[],items:[]}};S.objs.unshift(o);S.cur=o.id;S.tab='in';save();render()}
 function openObj(id){S.cur=id;S.tab='in';render()}
@@ -52,31 +54,33 @@ function objView(a){const o=cur(),s=sec();
  <label>Виды работ: ${s.types.length?esc(s.types.join(', ')):'не заданы'}</label>
  <div class="row"><input id="nt" placeholder="Новый вид работ"><button onclick="addType()" style="flex:0 0 auto">Добавить</button></div>
  ${s.types.filter((t,i)=>S.tab=='out'||i>0).map(t=>`<button class="d" style="min-height:40px;margin:6px 6px 0 0" onclick="delType('${esc(t)}')">✕ ${esc(t)}</button>`).join('')}</div>
- ${s.items.map((i,k)=>`<div class="card it"><div onclick="editItem('${i.id}')" style="flex:1"><b>В${k+1}</b> <span class="mu">${esc((i.types||[]).join(', '))}</span><div class="mu">${i.l||0} / ${i.r||0} / ${i.t||0} мм${i.w?' · откос '+esc(i.w):''}</div>${i.note?`<div class="mu">${esc(i.note)}</div>`:''}</div><div class="big">${f(lm(i))}</div></div>`).join('')}
- <div class="card tot">${s.types.map(t=>{const v=s.items.filter(i=>(i.types||[]).includes(t)).reduce((a,i)=>a+lm(i),0);return v?`<div class="mu">${esc(t)}: ${f(v)} м.п.</div>`:''}).join('')}<div class="mu">Итого: ${SN[S.tab].toLowerCase()}</div><div class="big">${f(tot(s))} м.п.</div><div class="mu">Всего по объекту: ${f(tot(o.in)+tot(o.out))} м.п.</div></div>
+ ${s.items.map((i,k)=>`<div class="card it"><div onclick="editItem('${i.id}')" style="flex:1"><b>В${k+1}</b> <div class="mu">${(i.types||[]).length?i.types.map(t=>esc(t)+' '+f(lmT(i,t))+(i.ov&&i.ov[t]&&Object.values(i.ov[t]).some(v=>v!=='')?'*':'')).join(' · '):'работа не выбрана'}</div><div class="mu">${i.l||0} / ${i.r||0} / ${i.t||0} мм${i.w?' · откос '+esc(i.w):''}</div>${i.note?`<div class="mu">${esc(i.note)}</div>`:''}</div><div class="big">${(i.types||[]).length?'':f(lm(i))}</div></div>`).join('')}
+ <div class="card tot"><div class="mu">Итого: ${SN[S.tab].toLowerCase()}</div>${s.types.length?s.types.map(t=>`<div class="big">${esc(t)}: ${f(tT(s,t))} м.п.</div>`).join(''):'<div class="mu">Добавьте вид работ</div>'}</div>
  <div class="bar"><button class="b" style="flex:2" onclick="editItem()">+ Окно / дверь</button><button onclick="exportMenu()">Экспорт</button></div>`;
  $('#nm').oninput=e=>{o.name=e.target.value;save()};$('#dt').oninput=e=>{o.date=e.target.value;save()};$('#cl').oninput=e=>{o.client=e.target.value;save()};$('#ph').oninput=e=>{o.phone=e.target.value;save()};$('#sw').oninput=e=>{s.w=e.target.value;save()}}
 function addType(){const v=$('#nt').value.trim(),s=sec();if(v&&!s.types.includes(v)){s.types.push(v);save();render()}}
 function delType(t){const s=sec();confirmBox(`Удалить вид работ «${t}»?`,()=>{s.types=s.types.filter(x=>x!==t);s.items.forEach(i=>{i.types=(i.types||[]).filter(x=>x!==t)});save();render()})}
-function editItem(id){const s=sec(),it=s.items.find(i=>i.id===id)||{id:'',l:'',r:'',t:'',w:s.w,note:'',types:s.types.slice(0,1)};const n=id?s.items.indexOf(it)+1:s.items.length+1;
+function editItem(id){const s=sec(),it=s.items.find(i=>i.id===id)||{id:'',l:'',r:'',t:'',w:s.w,note:'',types:s.types.slice(0,1),ov:{}};const n=id?s.items.indexOf(it)+1:s.items.length+1;
  const fld=(k,l)=>`<div><label>${l}</label><input id="f${k}" inputmode="decimal" value="${esc(it[k])}" oninput="pv()"></div>`;
  $('#ov').innerHTML=`<div class="ov"><div class="sh"><div class="it"><h1 style="margin:0">В${n}</h1><div class="big" id="pv"></div></div>
- ${s.types.length?`<label>Виды работ (можно несколько)</label><div id="ftypes">${s.types.map((t,k)=>`<label class="chk"><input type="checkbox" value="${k}" ${(it.types||[]).includes(t)?'checked':''}><span>${esc(t)}</span></label>`).join('')}</div>`:''}
+ ${s.types.length?`<label>Виды работ (можно несколько)</label>${s.types.map((t,k)=>{const o=(it.ov||{})[t]||{},on=(it.types||[]).includes(t),inp=(q,l)=>`<div><label>${l}</label><input data-k="${k}" data-f="${q}" inputmode="decimal" value="${esc(o[q]??'')}" oninput="pv()"></div>`;return `<div class="wk"><label class="chk"><input type="checkbox" value="${k}" ${on?'checked':''} onchange="pv()"><span>${esc(t)}</span><b id="wl${k}" style="margin-left:auto"></b></label><div style="display:${on?'block':'none'}" id="wo${k}"><div class="mu">Свои размеры для этой работы, мм (пусто = как у окна)</div><div class="row">${inp('l','Левая')}${inp('r','Правая')}</div><div class="row">${inp('t','Верхняя')}${inp('w','Ширина')}</div></div></div>`}).join('')}`:''}
  <div class="row">${fld('l','Левая, мм')}${fld('r','Правая, мм')}</div><div class="row">${fld('t','Верхняя, мм')}${fld('w','Ширина откоса, мм')}</div>
  <label>Примечание</label><input id="fnote" value="${esc(it.note)}">
  <div class="row" style="margin-top:14px"><button onclick="closeOv()">Отмена</button><button class="b" onclick="saveItem('${id||''}')">Сохранить</button></div>
  ${id?`<button class="d w" style="margin-top:8px" onclick="delItem('${id}')">Удалить замер</button>`:''}</div></div>`;pv()}
-function pv(){const g=k=>$('#f'+k).value;$('#pv').textContent=f(lm({l:g('l'),r:g('r'),t:g('t')}))+' м.п.'}
-function saveItem(id){const s=sec(),g=k=>$('#f'+k).value.trim();const d={l:g('l'),r:g('r'),t:g('t'),w:g('w'),note:$('#fnote').value.trim(),types:[...document.querySelectorAll('#ftypes input:checked')].map(c=>s.types[+c.value])};
+function pv(){const g=k=>$('#f'+k).value;$('#pv').textContent=f(lm({l:g('l'),r:g('r'),t:g('t')}))+' м.п.';
+document.querySelectorAll('#ov [data-f]').forEach(e=>e.placeholder=g(e.dataset.f)||'0');
+sec().types.forEach((t,k)=>{const c=document.querySelector(`#ov input[type=checkbox][value="${k}"]`);if(!c)return;$('#wo'+k).style.display=c.checked?'block':'none';
+const v=q=>{const e=document.querySelector(`#ov [data-k="${k}"][data-f="${q}"]`).value.trim();return e!==''?e:g(q)};$('#wl'+k).textContent=c.checked?f(lm({l:v('l'),r:v('r'),t:v('t')})):''})}
+function ovOf(s){const o={};document.querySelectorAll('#ov input[type=checkbox]:checked').forEach(c=>{const r={};['l','r','t','w'].forEach(q=>{r[q]=document.querySelector(`#ov [data-k="${c.value}"][data-f="${q}"]`).value.trim()});o[s.types[+c.value]]=r});return o}
+function saveItem(id){const s=sec(),g=k=>$('#f'+k).value.trim();const d={l:g('l'),r:g('r'),t:g('t'),w:g('w'),note:$('#fnote').value.trim(),types:[...document.querySelectorAll('#ov input[type=checkbox]:checked')].map(c=>s.types[+c.value]),ov:ovOf(s)};
  if(id)Object.assign(s.items.find(i=>i.id===id),d);else s.items.push({id:uid(),...d});save();closeOv();render()}
 function delItem(id){confirmBox('Удалить этот замер?',()=>{const s=sec();s.items=s.items.filter(i=>i.id!==id);save();render()})}
 function exportMenu(){$('#ov').innerHTML=`<div class="ov"><div class="sh"><h1>Экспорт ведомости</h1><button class="b w" onclick="doXlsx()">Excel (.xlsx)</button><button class="b w" style="margin-top:8px" onclick="doPdf()">PDF</button><button class="w" style="margin-top:8px" onclick="closeOv()">Закрыть</button></div></div>`}
-const H=['№','Вид работ','Левая','Правая','Верх','Откос','Пог. м','Примечание'];
-function sheet(){const o=cur(),R=[['Ведомость замеров откосов'],['Объект: '+o.name],['Заказчик: '+(o.client||'')],['Телефон: '+(o.phone||'')],['Дата: '+fd(o.date)],[]];
- ['in','out'].forEach(k=>{const s=o[k];R.push([SN[k]],H);s.items.forEach((i,n)=>R.push(['В'+(n+1),(i.types||[]).join(', '),+i.l||0,+i.r||0,+i.t||0,i.w,+lm(i).toFixed(3),i.note]));
-  s.types.forEach(t=>{const v=s.items.filter(i=>(i.types||[]).includes(t)).reduce((a,i)=>a+lm(i),0);if(v)R.push(['','Итого: '+t,'','','','',+v.toFixed(3)])});
-  R.push(['','ИТОГО '+SN[k].toLowerCase(),'','','','',+tot(s).toFixed(3)],['','Ширина откосов, мм','','','',s.w],[])});
- R.push(['','ОБЩИЙ ИТОГО, пог. м','','','','',+(tot(o.in)+tot(o.out)).toFixed(3)]);return R}
+function rowsAll(){const o=cur(),A=[],B=[],N=v=>v===''||v==null?'':+v||0;['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';
+ s.items.forEach((i,n)=>{const T=i.types||[];if(!T.length)A.push([sn,'В'+(n+1),'',N(i.l),N(i.r),N(i.t),N(i.w),+lm(i).toFixed(3),i.note||'']);
+  T.forEach(t=>A.push([sn,'В'+(n+1),t,N(eff(i,t,'l')),N(eff(i,t,'r')),N(eff(i,t,'t')),N(eff(i,t,'w')),+lmT(i,t).toFixed(3),i.note||'']))});
+ s.types.forEach(t=>B.push([sn,t,+tT(s,t).toFixed(3),N(s.w)]))});return[A,B,o]}
 const fname=ext=>'Ведомость_'+(cur().name||'объект').replace(/[^\wа-яё]+/gi,'_').slice(0,40)+'.'+ext;
 function out(name,data){const b=data instanceof Blob?data:new Blob([data]);const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);closeOv()}
 function crc(b){let t=crc.t;if(!t){t=crc.t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t.push(c>>>0)}}let r=-1;for(const v of b)r=t[(r^v)&255]^(r>>>8);return(r^-1)>>>0}
@@ -89,22 +93,46 @@ C.push(g.buffer,nb);o+=30+nb.length+d.length});
 let cl=0;C.forEach(x=>cl+=x.byteLength);
 const e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,F.length,true);e.setUint16(10,F.length,true);e.setUint32(12,cl,true);e.setUint32(16,o,true);
 return new Blob([...P,...C,e.buffer])}
-function xmlSheet(R){const L='ABCDEFGH',x2=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'),W=[6,26,9,9,9,9,10,30];
+function xmlSheet(R,W){const L='ABCDEFGHI',x2=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const rows=R.map((r,i)=>`<row r="${i+1}">`+r.map((v,j)=>v===''||v==null?'':typeof v==='number'?`<c r="${L[j]}${i+1}"><v>${v}</v></c>`:`<c r="${L[j]}${i+1}" t="inlineStr"><is><t xml:space="preserve">${x2(v)}</t></is></c>`).join('')+'</row>').join('');
 return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><cols>'+W.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols><sheetData>'+rows+'</sheetData></worksheet>'}
-function doXlsx(){const H0='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+function doXlsx(){const[A,B,o]=rowsAll(),H0='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+const S=[['Замеры',[['Раздел','№','Работа','Левая, мм','Правая, мм','Верх, мм','Ширина откоса, мм','Пог. м','Примечание'],...A],[11,6,18,10,10,10,14,9,24]],
+['Итоги',[['Раздел','Работа','Итого, пог. м','Ширина откосов раздела, мм'],...B],[11,20,13,18]],
+['Объект',[['Объект',o.name||''],['Заказчик',o.client||''],['Телефон',o.phone||''],['Дата',fd(o.date)]],[12,34]]];
+const R='http://schemas.openxmlformats.org/officeDocument/2006/relationships';
 out(fname('xlsx'),mkzip([
-['[Content_Types].xml',H0+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>'],
-['_rels/.rels',H0+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
-['xl/workbook.xml',H0+'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Ведомость" sheetId="1" r:id="rId1"/></sheets></workbook>'],
-['xl/_rels/workbook.xml.rels',H0+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>'],
-['xl/worksheets/sheet1.xml',xmlSheet(sheet())]]))}
-function doPdf(){const R=sheet(),W=1240,Hh=1754,X=[50,125,430,520,610,700,810,930],pages=[];let c,x,y;
- const np=()=>{const cv=document.createElement('canvas');cv.width=W;cv.height=Hh;x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,Hh);x.fillStyle='#000';c=cv;pages.push(cv);y=80};np();
- const wrap=(q,n)=>{const o=[];let c='';q.split(' ').forEach(w=>{if((c+' '+w).trim().length>n){if(c)o.push(c);c=w}else c=(c+' '+w).trim()});if(c)o.push(c);return o.length?o:['']};
- R.forEach(r=>{if(y>Hh-150)np();const t=r.length>2;x.font=(r.length==1||r[1]&&String(r[1]).startsWith('ИТОГО'))?'bold 26px sans-serif':'22px sans-serif';let ml=1;
-  if(!t){x.fillText(r[0]||'',X[0],y)}else r.forEach((v,j)=>{let q=String(v??'');if(typeof v==='number'&&j>1&&j<7)q=j==6?f(v):String(v);const ls=j==1?wrap(q,26):j==7?wrap(q,22):[q];ml=Math.max(ml,ls.length);ls.forEach((z,k)=>x.fillText(z,X[j],y+k*28))});
-  if(t){x.fillStyle='#bbb';x.fillRect(X[0],y+10+(ml-1)*28,W-100,1);x.fillStyle='#000'}y+=(r.length==1?46:38)+(ml-1)*28});
+['[Content_Types].xml',H0+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'+S.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')+'</Types>'],
+['_rels/.rels',H0+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+R+'/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+['xl/workbook.xml',H0+'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="'+R+'"><sheets>'+S.map((q,i)=>`<sheet name="${q[0]}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')+'</sheets></workbook>'],
+['xl/_rels/workbook.xml.rels',H0+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+S.map((_,i)=>`<Relationship Id="rId${i+1}" Type="${R}/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')+'</Relationships>'],
+...S.map((q,i)=>[`xl/worksheets/sheet${i+1}.xml`,xmlSheet(q[1],q[2])])]))}
+function drawCard(g,cx,cy,title,i,T,COL){const n=Math.max(T.length,1),top=cy+40+22*n,g0=14+10*n,rw=300,rh=200,rx=cx+130,ry=top+g0;
+ g.textAlign='left';g.font='bold 26px sans-serif';g.fillStyle='#000';g.fillText(title+(i.note?'  ('+i.note.slice(0,28)+')':''),cx,cy+26);
+ g.fillStyle='#e8f1fb';g.fillRect(rx,ry,rw,rh);g.strokeStyle='#444';g.lineWidth=4;g.strokeRect(rx,ry,rw,rh);g.lineWidth=2;g.strokeRect(rx+14,ry+14,rw-28,rh-28);g.beginPath();g.moveTo(rx+rw/2,ry+14);g.lineTo(rx+rw/2,ry+rh-14);g.stroke();
+ const ra=(v,b)=>{b=+b||0;v=+v||0;return b>0?Math.min(1,v/b):1},ln=(a,b,c,d)=>{g.beginPath();g.moveTo(a,b);g.lineTo(c,d);g.stroke()};
+ T.forEach((t,k)=>{const col=COL[k],d=8+k*10,L=eff(i,t,'l'),R=eff(i,t,'r'),Tt=eff(i,t,'t');g.strokeStyle=col;g.lineWidth=6;
+  ln(rx-d,ry-d,rx-d,ry-d+(rh+d)*ra(L,i.l));ln(rx-d,ry-d,rx-d+(rw+2*d)*ra(Tt,i.t),ry-d);ln(rx+rw+d,ry-d,rx+rw+d,ry-d+(rh+d)*ra(R,i.r));
+  g.fillStyle=col;g.font='bold 20px sans-serif';g.textAlign='right';g.fillText((+L||0)+'',rx-70,ry+30+k*24);g.textAlign='left';g.fillText((+R||0)+'',rx+rw+70,ry+30+k*24);
+  g.textAlign='center';g.fillText(t.slice(0,18)+': '+(+Tt||0)+' мм',rx+rw/2,cy+58+22*k);g.textAlign='left';
+  const yy=ry+rh+34+22*k;g.fillRect(cx+4,yy-14,16,16);g.fillStyle='#000';g.font='18px sans-serif';g.fillText(t.slice(0,18)+': откос '+(eff(i,t,'w')||'—')+' мм, '+f(lmT(i,t))+' пог. м',cx+28,yy)});
+ if(!T.length){g.fillStyle='#777';g.font='18px sans-serif';g.fillText('работы не выбраны',cx+4,ry+rh+34)}}
+function doPdf(){const o=cur(),[A,B]=rowsAll(),W=1240,Hh=1754,pages=[],COL=['#1f6feb','#d1242f','#2da44e','#bf8700','#8250df','#0a7a8c'];let x,y;
+ const np=()=>{const cv=document.createElement('canvas');cv.width=W;cv.height=Hh;x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,Hh);x.textAlign='left';pages.push(cv);y=80},
+ tx=(q,px,py,fs,b,col)=>{x.font=(b?'bold ':'')+fs+'px sans-serif';x.fillStyle=col||'#000';x.fillText(q,px,py)};
+ np();tx('Ведомость замеров откосов',50,y,34,1);y+=46;tx('Объект: '+(o.name||''),50,y,24);y+=34;tx('Заказчик: '+(o.client||'')+'    Тел.: '+(o.phone||''),50,y,24);y+=34;tx('Дата замеров: '+fd(o.date),50,y,24);y+=50;
+ ['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';if(!s.items.length)return;if(y>Hh-250)np();tx(sn+' работы',50,y,30,1,'#1f6feb');y+=44;
+  const X=[50,120,400,500,600,700,800,900];['№','Работа','Лев.','Прав.','Верх','Откос','Пог.м','Прим.'].forEach((h,j)=>tx(h,X[j],y,20,1));y+=12;x.fillStyle='#000';x.fillRect(50,y,W-100,2);y+=30;
+  A.filter(r=>r[0]==sn).forEach(r=>{if(y>Hh-100)np();[r[1],r[2],r[3],r[4],r[5],r[6],f(r[7]),r[8]].forEach((v,j)=>{let q=String(v??''),m=j==1?24:j==7?20:8;if(q.length>m)q=q.slice(0,m)+'…';tx(q,X[j],y,22)});y+=36});
+  y+=6;x.fillStyle='#000';x.fillRect(50,y,W-100,1);y+=34;
+  B.filter(r=>r[0]==sn).forEach(r=>{if(y>Hh-100)np();tx('Итого, '+sn.toLowerCase()+' работы — '+r[1]+': '+f(r[2])+' пог. м',50,y,26,1);y+=40});
+  tx('Ширина откосов, мм ('+sn.toLowerCase()+'): '+(s.w||'—'),50,y,24);y+=60});
+ ['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';if(!s.items.length)return;np();tx('Схемы: '+sn.toLowerCase()+' работы',50,y,32,1,'#1f6feb');y+=30;
+  let col=0,rowY=y,rowH=0;
+  s.items.forEach((i,n)=>{const T=(i.types||[]).slice(0,6),h=304+54*Math.max(T.length,1);
+   if(col==0&&rowY+h>Hh-40&&rowY>y){np();rowY=y;rowH=0}
+   drawCard(x,50+col*590,rowY,'В'+(n+1),i,T,COL);rowH=Math.max(rowH,h);
+   if(col==1){rowY+=rowH+20;rowH=0;col=0}else col=1})});
  const E=new TextEncoder(),P=[],off=[];let L=0;const add=b=>{if(typeof b=='string')b=E.encode(b);P.push(b);L+=b.length};
  const jp=pages.map(cv=>{const b=atob(cv.toDataURL('image/jpeg',.85).split(',')[1]);return Uint8Array.from(b,ch=>ch.charCodeAt(0))});
  const obj=(n,s)=>{off[n]=L;add(n+' 0 obj\n'+s+'\nendobj\n')};add('%PDF-1.4\n');
