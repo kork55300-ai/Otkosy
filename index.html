@@ -138,6 +138,12 @@ function doPdf(){const o=cur(),W=1240,Hh=1754,pages=[],COL=['#1f6feb','#d1242f',
    s.items.forEach((i,n)=>{if(y>Hh-120){np();head()}cell(50,y,100,44,'В'+(n+1),1);ch.forEach((t,j)=>{const has=(i.types||[]).includes(t);cell(150+j*cw,y,cw,44,has?(isN(s,t)?'1 шт':f(lmT(i,t))+' м.п.'):'',0)});y+=44});
    if(y>Hh-120){np();head()}cell(50,y,100,48,'Итого',1,'#f3f3f3');ch.forEach((t,j)=>cell(150+j*cw,y,cw,48,fv(s,t)+' '+un(s,t),1,'#f3f3f3'));y+=48+24});
   tx('Ширина откосов, мм: '+(s.w||'—'),50,y,24);y+=56});
+ {const M={};['in','out'].forEach(k=>{const s=o[k];s.types.forEach(t=>{const u=un(s,t),key=t+'|'+u;(M[key]=M[key]||{t,u,in:0,out:0})[k]+=tT(s,t)})});
+  const R=Object.values(M).filter(r=>r.in||r.out);
+  if(R.length){if(y>Hh-200-R.length*46)np();tx('Общий итог по работам',50,y,30,1,'#1f6feb');y+=40;
+   const cl=(px,w,q,b,fill)=>{if(fill){x.fillStyle=fill;x.fillRect(px,y,w,46)}x.strokeStyle='#777';x.lineWidth=1.5;x.strokeRect(px,y,w,46);tx(q,px+w/2,y+31,21,b,'#000','center')};
+   cl(50,470,'Работа',1,'#eaf1fb');cl(520,200,'Внутренние',1,'#eaf1fb');cl(720,200,'Наружные',1,'#eaf1fb');cl(920,220,'Всего',1,'#eaf1fb');y+=46;
+   R.forEach(r=>{if(y>Hh-100)np();const v=n=>r.u=='шт'?(n?n+' шт':'—'):(n?f(n)+' м.п.':'—');cl(50,470,r.t.slice(0,34),1);cl(520,200,v(r.in));cl(720,200,v(r.out));cl(920,220,v(r.in+r.out),1,'#f3f3f3');y+=46})}}
  ['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';if(!s.items.length)return;
   s.items.forEach((i,n)=>{const p=n%6;if(p==0){np();tx('Схемы: '+sn.toLowerCase()+' работы'+(n?' (продолжение)':''),50,y,30,1,'#1f6feb');y=130}
    drawCard(x,50+(p%2)*570,y+Math.floor(p/2)*520,'В'+(n+1),i,(i.types||[]).slice(0,6),COL,s.nol||[])})});
