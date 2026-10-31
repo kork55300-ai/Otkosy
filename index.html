@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1f6feb"><title>Замеры откосов</title>
+<meta name="theme-color" content="#0e1013"><meta name="color-scheme" content="dark"><title>Замеры откосов</title>
 <link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><link rel="icon" href="icon-192.png">
 <style>
-:root{--bg:#f4f6f8;--card:#fff;--tx:#1b1f24;--mu:#6a737d;--pr:#1f6feb;--bd:#d0d7de;--dg:#d1242f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1117;--card:#161b22;--tx:#e6edf3;--mu:#8b949e;--pr:#4493f8;--bd:#30363d;--dg:#f85149}}
-:root[data-theme="dark"]{--bg:#0d1117;--card:#161b22;--tx:#e6edf3;--mu:#8b949e;--pr:#4493f8;--bd:#30363d;--dg:#f85149}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.4 system-ui,sans-serif;max-width:640px;margin:auto;padding:12px 12px 90px}
-h1{font-size:22px;margin:8px 0 12px}.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:10px}
-button{font:inherit;min-height:52px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:0 16px}
-.b{background:var(--pr);color:#fff;border:0;font-weight:600}.d{color:var(--dg)}.w{width:100%}
-input,select{font:inherit;width:100%;min-height:52px;border:1px solid var(--bd);border-radius:12px;padding:0 12px;background:var(--bg);color:var(--tx)}
-label{display:block;font-size:14px;color:var(--mu);margin:8px 0 3px}.row{display:flex;gap:8px}.row>*{flex:1}
-.tabs{display:flex;gap:8px;margin-bottom:10px}.tabs button{flex:1}.tabs .on{background:var(--pr);color:#fff;border:0}
-.it{display:flex;justify-content:space-between;align-items:center;gap:8px}.mu{color:var(--mu);font-size:14px}.big{font-size:22px;font-weight:700}
-.bar{position:fixed;left:0;right:0;bottom:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--bd);display:flex;gap:8px;max-width:640px;margin:auto}
-.ov{position:fixed;inset:0;background:#0009;display:flex;align-items:flex-end;justify-content:center;z-index:9}
-.sh{background:var(--card);width:100%;max-width:640px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px))}
-.tot{text-align:right}.wk{margin-bottom:4px}.wk>div:last-child{padding:0 4px 8px}.chk{display:flex;align-items:center;gap:12px;font-size:17px;color:var(--tx);margin:6px 0;min-height:48px;padding:0 12px;border:1px solid var(--bd);border-radius:12px;background:var(--bg)}.chk input{width:26px;height:26px;min-height:26px;flex:0 0 auto}
+:root{--bg:#0e1013;--bg2:#13161b;--card:#1a1e25;--card2:#232833;--bd:#2c323d;--tx:#e8ebf0;--mu:#8b93a1;--pr:#5b9cf5;--pr2:#4a86de;--prt:#0b1220;--dg:#ef6b6b;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:auto;max-width:640px;background:var(--bg);color:var(--tx);font:16px/1.45 Inter,"Segoe UI",Roboto,system-ui,sans-serif;padding:14px 14px 100px;-webkit-font-smoothing:antialiased}
+h1{font-size:24px;font-weight:700;letter-spacing:-.01em;margin:10px 0 16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px;margin-bottom:12px}
+.card>label:first-child{margin-top:0}
+button{font:inherit;font-weight:600;min-height:52px;border-radius:14px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);padding:0 18px;transition:background .15s,transform .06s,border-color .15s}
+button:active{transform:scale(.98);background:#2d3441}
+button:focus-visible,input:focus-visible{outline:2px solid var(--pr);outline-offset:2px}
+.b{background:var(--pr);color:var(--prt);border-color:transparent}.b:active{background:var(--pr2)}
+.d{color:var(--dg);background:#ef6b6b14;border-color:#ef6b6b40}.d:active{background:#ef6b6b2a}
+.w{width:100%}
+input,select{font:inherit;width:100%;min-height:52px;border:1px solid var(--bd);border-radius:14px;padding:0 14px;background:var(--bg2);color:var(--tx);transition:border-color .15s,box-shadow .15s}
+input::placeholder{color:#5f6775}
+input:focus{border-color:var(--pr);box-shadow:0 0 0 3px #5b9cf522;outline:none}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--mu);margin:14px 0 6px}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.tabs{display:flex;gap:6px;padding:5px;background:var(--bg2);border:1px solid var(--bd);border-radius:16px;margin-bottom:12px}
+.tabs button{flex:1;border:0;background:transparent;color:var(--mu);min-height:46px}
+.tabs .on{background:var(--pr);color:var(--prt)}
+.it{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.mu{color:var(--mu);font-size:14px}.big{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.tot{text-align:right;background:linear-gradient(180deg,#1d2634,#191e27);border-color:#2f3b50}.tot .big{font-size:20px;color:#9cc4fb}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px));background:#0e1013ee;backdrop-filter:blur(10px);border-top:1px solid var(--bd);display:flex;gap:10px;max-width:640px;margin:auto}
+.ov{position:fixed;inset:0;background:#000b;display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.sh{background:var(--card);border:1px solid var(--bd);border-bottom:0;width:100%;max-width:640px;max-height:92%;overflow:auto;border-radius:24px 24px 0 0;padding:18px 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.chk{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--tx);margin:8px 0;min-height:52px;padding:0 14px;border:1px solid var(--bd);border-radius:14px;background:var(--bg2)}
+.chk:has(input:checked){border-color:#5b9cf566;background:#5b9cf512}
+.chk input{-webkit-appearance:none;appearance:none;width:26px;height:26px;min-height:26px;flex:0 0 26px;border:2px solid #4a5160;border-radius:8px;padding:0;background:transparent;display:grid;place-content:center}
+.chk input:checked{background:var(--pr);border-color:var(--pr)}
+.chk input:checked::after{content:"";width:6px;height:12px;border:solid var(--prt);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.wk{margin-bottom:4px}.wk>div:last-child:not(:empty){margin:-2px 0 8px;padding:4px 12px 12px;background:var(--bg2);border:1px solid var(--bd);border-radius:14px}
 </style></head><body><div id="app"></div><div id="ov"></div>
 <script>
 const KEY='otkosy-v1';let S={objs:[],cur:null,tab:'in'};
@@ -45,7 +63,7 @@ function listView(a){
  a.innerHTML=`<h1>Замеры откосов</h1>`+(S.objs.length?'':'<div class="card mu">Объектов пока нет. Нажмите «Новый объект».</div>')+
  S.objs.map(o=>`<div class="card it"><div onclick="openObj('${o.id}')" style="flex:1"><b>${esc(o.name)||'Без названия'}</b><div class="mu">${o.client?esc(o.client)+' · ':''}${fd(o.date)} · В: ${o.in.items.length}, Н: ${o.out.items.length}</div></div><button class="d" onclick="delObj('${o.id}')">✕</button></div>`).join('')+
  `<div class="bar"><button class="b w" onclick="newObj()">+ Новый объект</button></div>`}
-function newObj(){const o={id:uid(),name:'',client:'',phone:'',date:today(),in:{w:'',types:['Штукатурка'],items:[]},out:{w:'',types:[],items:[]}};S.objs.unshift(o);S.cur=o.id;S.tab='in';save();render()}
+function newObj(){const o={id:uid(),name:'',client:'',phone:'',date:today(),in:{w:'',types:['Штукатурка','Сендвич-панели','Сендвич-панели(каркас)','Акрил','Уголок','Демонтаж'],nol:['Демонтаж'],items:[]},out:{w:'',types:['Пенопласт','Покраска','Штукатурка','Контршульц'],nol:[],items:[]}};S.objs.unshift(o);S.cur=o.id;S.tab='in';save();render()}
 function openObj(id){S.cur=id;S.tab='in';render()}
 function delObj(id){confirmBox('Удалить объект со всеми замерами?',()=>{S.objs=S.objs.filter(o=>o.id!==id);save();render()})}
 function objView(a){const o=cur(),s=sec();
@@ -53,25 +71,25 @@ function objView(a){const o=cur(),s=sec();
  <div class="card"><label>Название или адрес</label><input id="nm" value="${esc(o.name)}" placeholder="ул. Ленина, 5, кв. 12">
  <label>Дата замеров</label><input id="dt" type="date" value="${esc(o.date)}"><label>Заказчик (ФИО)</label><input id="cl" value="${esc(o.client)}" placeholder="Иванов Иван Иванович" autocomplete="name"><label>Телефон заказчика</label><input id="ph" type="tel" inputmode="tel" value="${esc(o.phone)}" placeholder="+7 900 000-00-00" autocomplete="tel"></div>
  <div class="tabs"><button class="${S.tab=='in'?'on':''}" onclick="S.tab='in';render()">Внутренние</button><button class="${S.tab=='out'?'on':''}" onclick="S.tab='out';render()">Наружные</button></div>
- <div class="card"><label>Ширина откосов, мм (${SN[S.tab].toLowerCase()})</label><input id="sw" inputmode="decimal" value="${esc(s.w)}">
+ <div class="card">${S.tab=='in'?`<label>Ширина откосов, мм (внутренние работы)</label><input id="sw" inputmode="decimal" value="${esc(s.w)}">`:''}
  <label>Виды работ: ${s.types.length?esc(s.types.join(', ')):'не заданы'}</label>
  <div class="row"><input id="nt" placeholder="Новый вид работ"><button onclick="addType()" style="flex:0 0 auto">Добавить</button></div><label class="chk"><input type="checkbox" id="nn"><span>Без погонажа (просто работа, считается в шт.)</span></label>
- ${s.types.map((t,k)=>`<div class="row" style="margin-top:6px"><button style="min-height:44px;text-align:left" onclick="renType(${k})">✎ ${esc(t)}${isN(s,t)?' (шт)':''}</button>${(S.tab=='out'||k>0)?`<button class="d" style="min-height:44px;flex:0 0 56px" onclick="delType(${k})">✕</button>`:''}</div>`).join('')}</div>
+ ${s.types.map((t,k)=>`<div class="row" style="margin-top:6px"><button style="min-height:44px;text-align:left" onclick="renType(${k})">✎ ${esc(t)}${isN(s,t)?' (шт)':''}</button><button class="d" style="min-height:44px;flex:0 0 56px" onclick="delType(${k})">✕</button></div>`).join('')}</div>
  ${s.items.map((i,k)=>`<div class="card it"><div onclick="editItem('${i.id}')" style="flex:1"><b>В${k+1}</b> <div class="mu">${(i.types||[]).length?i.types.map(t=>esc(t)+(isN(s,t)?' ✓':' '+f(lmT(i,t)))+(i.ov&&i.ov[t]&&Object.values(i.ov[t]).some(v=>v!=='')?'*':'')).join(' · '):'работа не выбрана'}</div><div class="mu">${i.l||0} / ${i.r||0} / ${i.t||0} мм${i.w?' · откос '+esc(i.w):''}</div>${i.note?`<div class="mu">${esc(i.note)}</div>`:''}</div><div class="big">${(i.types||[]).length?'':f(lm(i))}</div></div>`).join('')}
  <div class="card tot"><div class="mu">Итого: ${SN[S.tab].toLowerCase()}</div>${s.types.length?s.types.map(t=>`<div class="big">${esc(t)}: ${fv(s,t)} ${un(s,t)}</div>`).join(''):'<div class="mu">Добавьте вид работ</div>'}</div>
  <div class="bar"><button class="b" style="flex:2" onclick="editItem()">+ Окно / дверь</button><button onclick="exportMenu()">Экспорт</button></div>`;
- $('#nm').oninput=e=>{o.name=e.target.value;save()};$('#dt').oninput=e=>{o.date=e.target.value;save()};$('#cl').oninput=e=>{o.client=e.target.value;save()};$('#ph').oninput=e=>{o.phone=e.target.value;save()};$('#sw').oninput=e=>{s.w=e.target.value;save()}}
+ $('#nm').oninput=e=>{o.name=e.target.value;save()};$('#dt').oninput=e=>{o.date=e.target.value;save()};$('#cl').oninput=e=>{o.client=e.target.value;save()};$('#ph').oninput=e=>{o.phone=e.target.value;save()};if($('#sw'))$('#sw').oninput=e=>{s.w=e.target.value;save()}}
 function renType(k){const t=sec().types[k];$('#ov').innerHTML=`<div class="ov"><div class="sh"><h1>Переименовать работу</h1><input id="rn" value="${esc(t)}"><div class="row" style="margin-top:14px"><button onclick="closeOv()">Отмена</button><button class="b" onclick="doRen(${k})">Сохранить</button></div></div></div>`}
 function doRen(k){const s=sec(),t=s.types[k],v=$('#rn').value.trim();if(!v||(v!==t&&s.types.includes(v))){closeOv();return}
  s.types[k]=v;s.nol=(s.nol||[]).map(x=>x===t?v:x);s.items.forEach(i=>{i.types=(i.types||[]).map(x=>x===t?v:x);if(i.ov&&i.ov[t]&&v!==t){i.ov[v]=i.ov[t];delete i.ov[t]}});save();closeOv();render()}
 function addType(){const v=$('#nt').value.trim(),s=sec();if(v&&!s.types.includes(v)){s.types.push(v);if($('#nn').checked)(s.nol=s.nol||[]).push(v);save();render()}}
 function delType(k){const s=sec(),t=s.types[k];confirmBox(`Удалить вид работ «${t}»?`,()=>{s.types=s.types.filter(x=>x!==t);s.nol=(s.nol||[]).filter(x=>x!==t);s.items.forEach(i=>{i.types=(i.types||[]).filter(x=>x!==t)});save();render()})}
-function editItem(id){const s=sec(),it=s.items.find(i=>i.id===id)||{id:'',l:'',r:'',t:'',w:s.w,note:'',types:s.types.slice(0,1),ov:{}};const n=id?s.items.indexOf(it)+1:s.items.length+1;
+function editItem(id){const s=sec(),it=s.items.find(i=>i.id===id)||{id:'',l:'',r:'',t:'',w:S.tab=='in'?s.w:'',note:'',types:[],ov:{}};const n=id?s.items.indexOf(it)+1:s.items.length+1;
  const fld=(k,l)=>`<div><label>${l}</label><input id="f${k}" inputmode="decimal" value="${esc(it[k])}" oninput="pv()"></div>`;
  $('#ov').innerHTML=`<div class="ov"><div class="sh"><div class="it"><h1 style="margin:0">В${n}</h1><div class="big" id="pv"></div></div>
- ${s.types.length?`<label>Виды работ (можно несколько)</label>${s.types.map((t,k)=>{const o=(it.ov||{})[t]||{},on=(it.types||[]).includes(t),inp=(q,l)=>`<div><label>${l}</label><input data-k="${k}" data-f="${q}" inputmode="decimal" value="${esc(o[q]??'')}" oninput="pv()"></div>`;return `<div class="wk"><label class="chk"><input type="checkbox" value="${k}" ${on?'checked':''} onchange="pv()"><span>${esc(t)}</span><b id="wl${k}" style="margin-left:auto"></b></label><div style="display:${on?'block':'none'}" id="wo${k}">${isN(s,t)?'':`<div class="mu">Свои размеры для этой работы, мм (пусто = как у окна)</div><div class="row">${inp('l','Левая')}${inp('r','Правая')}</div><div class="row">${inp('t','Верхняя')}${inp('w','Ширина')}</div>`}</div></div>`}).join('')}`:''}
  <div class="row">${fld('l','Левая, мм')}${fld('r','Правая, мм')}</div><div class="row">${fld('t','Верхняя, мм')}${fld('w','Ширина откоса, мм')}</div>
  <label>Примечание</label><input id="fnote" value="${esc(it.note)}">
+ ${s.types.length?`<label>Виды работ (можно несколько)</label>${s.types.map((t,k)=>{const o=(it.ov||{})[t]||{},on=(it.types||[]).includes(t),inp=(q,l)=>`<div><label>${l}</label><input data-k="${k}" data-f="${q}" inputmode="decimal" value="${esc(o[q]??'')}" oninput="pv()"></div>`;return `<div class="wk"><label class="chk"><input type="checkbox" value="${k}" ${on?'checked':''} onchange="pv()"><span>${esc(t)}</span><b id="wl${k}" style="margin-left:auto"></b></label><div style="display:${on?'block':'none'}" id="wo${k}">${isN(s,t)?'':`<div class="mu">Свои размеры для этой работы, мм (пусто = как у окна)</div><div class="row">${inp('l','Левая')}${inp('r','Правая')}</div><div class="row">${inp('t','Верхняя')}${inp('w','Ширина')}</div>`}</div></div>`}).join('')}`:''}
  <div class="row" style="margin-top:14px"><button onclick="closeOv()">Отмена</button><button class="b" onclick="saveItem('${id||''}')">Сохранить</button></div>
  ${id?`<button class="d w" style="margin-top:8px" onclick="delItem('${id}')">Удалить замер</button>`:''}</div></div>`;pv()}
 function pv(){const g=k=>$('#f'+k).value;$('#pv').textContent=f(lm({l:g('l'),r:g('r'),t:g('t')}))+' м.п.';
@@ -86,7 +104,7 @@ function exportMenu(){$('#ov').innerHTML=`<div class="ov"><div class="sh"><h1>Э
 function rowsAll(){const o=cur(),A=[],B=[],N=v=>v===''||v==null?'':+v||0;['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';
  s.items.forEach((i,n)=>{const T=i.types||[];if(!T.length)A.push([sn,'В'+(n+1),'',N(i.l),N(i.r),N(i.t),N(i.w),+lm(i).toFixed(3),i.note||'']);
   T.forEach(t=>A.push(isN(s,t)?[sn,'В'+(n+1),t,'','','','','',i.note||'']:[sn,'В'+(n+1),t,N(eff(i,t,'l')),N(eff(i,t,'r')),N(eff(i,t,'t')),N(eff(i,t,'w')),+lmT(i,t).toFixed(3),i.note||'']))});
- s.types.forEach(t=>B.push([sn,t,+tT(s,t).toFixed(3),isN(s,t)?'шт':'пог. м',N(s.w)]))});return[A,B,o]}
+ s.types.forEach(t=>B.push([sn,t,+tT(s,t).toFixed(3),isN(s,t)?'шт':'пог. м',k=='in'?N(s.w):'']))});return[A,B,o]}
 const fname=ext=>'Ведомость_'+(cur().name||'объект').replace(/[^\wа-яё]+/gi,'_').slice(0,40)+'.'+ext;
 function out(name,data){const b=data instanceof Blob?data:new Blob([data]);const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);closeOv()}
 function crc(b){let t=crc.t;if(!t){t=crc.t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t.push(c>>>0)}}let r=-1;for(const v of b)r=t[(r^v)&255]^(r>>>8);return(r^-1)>>>0}
@@ -140,7 +158,7 @@ function doPdf(){const o=cur(),W=1240,Hh=1754,pages=[],COL=['#1f6feb','#d1242f',
    if(y>Hh-250)np();head();
    s.items.forEach((i,n)=>{if(y>Hh-120){np();head()}cell(50,y,100,44,'В'+(n+1),1);ch.forEach((t,j)=>{const has=(i.types||[]).includes(t);cell(150+j*cw,y,cw,44,has?(isN(s,t)?'1 шт':f(lmT(i,t))+' м.п.'):'',0)});y+=44});
    if(y>Hh-120){np();head()}cell(50,y,100,48,'Итого',1,'#f3f3f3');ch.forEach((t,j)=>cell(150+j*cw,y,cw,48,fv(s,t)+' '+un(s,t),1,'#f3f3f3'));y+=48+24});
-  tx('Ширина откосов, мм: '+(s.w||'—'),50,y,24);y+=56});
+  if(k=='in'){tx('Ширина откосов, мм: '+(s.w||'—'),50,y,24);y+=56}else y+=24});
  {const M={};['in','out'].forEach(k=>{const s=o[k];s.types.forEach(t=>{const u=un(s,t),key=t+'|'+u;(M[key]=M[key]||{t,u,in:0,out:0})[k]+=tT(s,t)})});
   const R=Object.values(M).filter(r=>r.in||r.out);
   if(R.length){if(y>Hh-200-R.length*46)np();tx('Общий итог по работам',50,y,30,1,'#1f6feb');y+=40;
