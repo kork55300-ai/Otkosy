@@ -110,32 +110,37 @@ out(fname('xlsx'),mkzip([
 ['xl/workbook.xml',H0+'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="'+R+'"><sheets>'+S.map((q,i)=>`<sheet name="${q[0]}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')+'</sheets></workbook>'],
 ['xl/_rels/workbook.xml.rels',H0+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+S.map((_,i)=>`<Relationship Id="rId${i+1}" Type="${R}/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')+'</Relationships>'],
 ...S.map((q,i)=>[`xl/worksheets/sheet${i+1}.xml`,xmlSheet(q[1],q[2])])]))}
-function drawCard(g,cx,cy,title,i,T,COL,NL){const n=Math.max(T.length,1),top=cy+40+22*n,g0=14+10*n,rw=300,rh=200,rx=cx+130,ry=top+g0;
- g.textAlign='left';g.font='bold 26px sans-serif';g.fillStyle='#000';g.fillText(title+(i.note?'  ('+i.note.slice(0,28)+')':''),cx,cy+26);
- g.fillStyle='#e8f1fb';g.fillRect(rx,ry,rw,rh);g.strokeStyle='#444';g.lineWidth=4;g.strokeRect(rx,ry,rw,rh);g.lineWidth=2;g.strokeRect(rx+14,ry+14,rw-28,rh-28);g.beginPath();g.moveTo(rx+rw/2,ry+14);g.lineTo(rx+rw/2,ry+rh-14);g.stroke();
- const ra=(v,b)=>{b=+b||0;v=+v||0;return b>0?Math.min(1,v/b):1},ln=(a,b,c,d)=>{g.beginPath();g.moveTo(a,b);g.lineTo(c,d);g.stroke()};
- T.forEach((t,k)=>{const col=COL[k],d=8+k*10,L=eff(i,t,'l'),R=eff(i,t,'r'),Tt=eff(i,t,'t'),y0=ry+rh+34+22*k;if(NL.includes(t)){g.fillStyle=col;g.fillRect(cx+4,y0-14,16,16);g.fillStyle='#000';g.font='18px sans-serif';g.fillText(t.slice(0,24)+': работа без погонажа',cx+28,y0);return}g.strokeStyle=col;g.lineWidth=6;
-  ln(rx-d,ry-d,rx-d,ry-d+(rh+d)*ra(L,i.l));ln(rx-d,ry-d,rx-d+(rw+2*d)*ra(Tt,i.t),ry-d);ln(rx+rw+d,ry-d,rx+rw+d,ry-d+(rh+d)*ra(R,i.r));
-  g.fillStyle=col;g.font='bold 20px sans-serif';g.textAlign='right';g.fillText((+L||0)+'',rx-70,ry+30+k*24);g.textAlign='left';g.fillText((+R||0)+'',rx+rw+70,ry+30+k*24);
-  g.textAlign='center';g.fillText(t.slice(0,18)+': '+(+Tt||0)+' мм',rx+rw/2,cy+58+22*k);g.textAlign='left';
-  const yy=ry+rh+34+22*k;g.fillRect(cx+4,yy-14,16,16);g.fillStyle='#000';g.font='18px sans-serif';g.fillText(t.slice(0,18)+': откос '+(eff(i,t,'w')||'—')+' мм, '+f(lmT(i,t))+' пог. м',cx+28,yy)});
- if(!T.length){g.fillStyle='#777';g.font='18px sans-serif';g.fillText('работы не выбраны',cx+4,ry+rh+34)}}
-function doPdf(){const o=cur(),[A,B]=rowsAll(),W=1240,Hh=1754,pages=[],COL=['#1f6feb','#d1242f','#2da44e','#bf8700','#8250df','#0a7a8c'];let x,y;
+function drawCard(g,cx,cy,title,i,T,COL,NL){const rw=230,rh=170,rx=cx+170,ry=cy+140,nm=v=>+v||0,ra=(v,b)=>{b=+b||0;v=+v||0;return b>0?Math.min(1,v/b):1},ln=(a,b,c,d)=>{g.beginPath();g.moveTo(a,b);g.lineTo(c,d);g.stroke()};
+ g.strokeStyle='#888';g.lineWidth=2;g.strokeRect(cx,cy,570,520);
+ g.textAlign='left';g.fillStyle='#000';g.font='bold 28px sans-serif';g.fillText(title,cx+14,cy+36);g.font='18px sans-serif';g.fillStyle='#555';g.fillText((i.note||'').slice(0,40),cx+90,cy+36);
+ g.fillStyle='#e8f1fb';g.fillRect(rx,ry,rw,rh);g.strokeStyle='#444';g.lineWidth=4;g.strokeRect(rx,ry,rw,rh);g.lineWidth=2;g.strokeRect(rx+12,ry+12,rw-24,rh-24);ln(rx+rw/2,ry+12,rx+rw/2,ry+rh-12);
+ T.forEach((t,k)=>{if(NL.includes(t))return;const d=8+k*8,L=eff(i,t,'l'),R=eff(i,t,'r'),Tt=eff(i,t,'t');g.strokeStyle=COL[k];g.lineWidth=5;
+  ln(rx-d,ry-d,rx-d,ry-d+(rh+d)*ra(L,i.l));ln(rx-d,ry-d,rx-d+(rw+2*d)*ra(Tt,i.t),ry-d);ln(rx+rw+d,ry-d,rx+rw+d,ry-d+(rh+d)*ra(R,i.r))});
+ const dl=rx-70,dr=rx+rw+70,dt=ry-70;g.strokeStyle='#000';g.lineWidth=2;g.fillStyle='#000';g.font='bold 20px sans-serif';
+ ln(dl,ry,dl,ry+rh);ln(dl-8,ry,dl+8,ry);ln(dl-8,ry+rh,dl+8,ry+rh);ln(dr,ry,dr,ry+rh);ln(dr-8,ry,dr+8,ry);ln(dr-8,ry+rh,dr+8,ry+rh);ln(rx,dt,rx+rw,dt);ln(rx,dt-8,rx,dt+8);ln(rx+rw,dt-8,rx+rw,dt+8);
+ g.textAlign='right';g.fillText(nm(i.l)+' мм',dl-10,ry+rh/2+7);g.textAlign='left';g.fillText(nm(i.r)+' мм',dr+10,ry+rh/2+7);
+ g.textAlign='center';g.fillText(nm(i.t)+' мм',rx+rw/2,dt-12);g.fillText('Ширина откоса: '+(i.w||'—')+' мм',rx+rw/2,ry+rh+34);g.textAlign='left';
+ T.forEach((t,k)=>{const yy=ry+rh+66+k*24;g.fillStyle=COL[k];g.fillRect(cx+14,yy-15,16,16);g.fillStyle='#000';g.font='18px sans-serif';let q;
+  if(NL.includes(t))q=t+': 1 шт';else{const df=[['l','лев.'],['r','прав.'],['t','верх.'],['w','шир.']].filter(a=>eff(i,t,a[0])!==i[a[0]]).map(a=>a[1]+' '+nm(eff(i,t,a[0])));q=t+': '+f(lmT(i,t))+' м.п.'+(df.length?' ('+df.join(', ')+')':'')}
+  g.fillText(q.slice(0,52),cx+38,yy)});
+ if(!T.length){g.fillStyle='#777';g.font='18px sans-serif';g.fillText('работы не выбраны',cx+14,ry+rh+66)}}
+function doPdf(){const o=cur(),W=1240,Hh=1754,pages=[],COL=['#1f6feb','#d1242f','#2da44e','#bf8700','#8250df','#0a7a8c'];let x,y;
  const np=()=>{const cv=document.createElement('canvas');cv.width=W;cv.height=Hh;x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,Hh);x.textAlign='left';pages.push(cv);y=80},
- tx=(q,px,py,fs,b,col)=>{x.font=(b?'bold ':'')+fs+'px sans-serif';x.fillStyle=col||'#000';x.fillText(q,px,py)};
- np();tx('Ведомость замеров откосов',50,y,34,1);y+=46;tx('Объект: '+(o.name||''),50,y,24);y+=34;tx('Заказчик: '+(o.client||'')+'    Тел.: '+(o.phone||''),50,y,24);y+=34;tx('Дата замеров: '+fd(o.date),50,y,24);y+=50;
- ['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';if(!s.items.length)return;if(y>Hh-250)np();tx(sn+' работы',50,y,30,1,'#1f6feb');y+=44;
-  const X=[50,120,400,500,600,700,800,900];['№','Работа','Лев.','Прав.','Верх','Откос','Пог.м','Прим.'].forEach((h,j)=>tx(h,X[j],y,20,1));y+=12;x.fillStyle='#000';x.fillRect(50,y,W-100,2);y+=30;
-  A.filter(r=>r[0]==sn).forEach(r=>{if(y>Hh-100)np();[r[1],r[2],r[3],r[4],r[5],r[6],r[7]===''?'✓':f(r[7]),r[8]].forEach((v,j)=>{let q=String(v??''),m=j==1?24:j==7?20:8;if(q.length>m)q=q.slice(0,m)+'…';tx(q,X[j],y,22)});y+=36});
-  y+=6;x.fillStyle='#000';x.fillRect(50,y,W-100,1);y+=34;
-  B.filter(r=>r[0]==sn).forEach(r=>{if(y>Hh-100)np();tx('Итого, '+sn.toLowerCase()+' работы — '+r[1]+': '+(r[3]=='шт'?r[2]:f(r[2]))+' '+r[3],50,y,26,1);y+=40});
-  tx('Ширина откосов, мм ('+sn.toLowerCase()+'): '+(s.w||'—'),50,y,24);y+=60});
- ['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';if(!s.items.length)return;np();tx('Схемы: '+sn.toLowerCase()+' работы',50,y,32,1,'#1f6feb');y+=30;
-  let col=0,rowY=y,rowH=0;
-  s.items.forEach((i,n)=>{const T=(i.types||[]).slice(0,6),h=304+54*Math.max(T.length,1);
-   if(col==0&&rowY+h>Hh-40&&rowY>y){np();rowY=y;rowH=0}
-   drawCard(x,50+col*590,rowY,'В'+(n+1),i,T,COL,s.nol||[]);rowH=Math.max(rowH,h);
-   if(col==1){rowY+=rowH+20;rowH=0;col=0}else col=1})});
+ tx=(q,px,py,fs,b,col,al)=>{x.font=(b?'bold ':'')+fs+'px sans-serif';x.fillStyle=col||'#000';x.textAlign=al||'left';x.fillText(q,px,py);x.textAlign='left'},
+ wrap=(q,n)=>{const r=[];let c='';q.split(' ').forEach(w=>{if((c+' '+w).trim().length>n){if(c)r.push(c);c=w}else c=(c+' '+w).trim()});if(c)r.push(c);return r.length?r:['']};
+ np();tx('Ведомость замеров откосов',50,y,34,1);y+=46;tx('Объект: '+(o.name||''),50,y,24);y+=34;tx('Заказчик: '+(o.client||'')+'    Тел.: '+(o.phone||''),50,y,24);y+=34;tx('Дата замеров: '+fd(o.date),50,y,24);y+=56;
+ ['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';if(!s.items.length)return;if(y>Hh-300)np();tx(sn+' работы',50,y,30,1,'#1f6feb');y+=40;
+  const CH=[];for(let a=0;a<s.types.length;a+=7)CH.push(s.types.slice(a,a+7));if(!CH.length)CH.push([]);
+  CH.forEach(ch=>{const cw=ch.length?Math.min(190,Math.floor(1040/ch.length)):190,
+   cell=(px,py,w,h,q,b,fill)=>{if(fill){x.fillStyle=fill;x.fillRect(px,py,w,h)}x.strokeStyle='#777';x.lineWidth=1.5;x.strokeRect(px,py,w,h);if(q)tx(q,px+w/2,py+h/2+8,21,b,'#000','center')},
+   head=()=>{const hh=92;cell(50,y,100,hh,'№',1,'#eaf1fb');ch.forEach((t,j)=>{cell(150+j*cw,y,cw,hh,'',0,'#eaf1fb');wrap(t,Math.max(8,Math.floor(cw/11))).slice(0,4).forEach((q,m)=>tx(q,150+j*cw+cw/2,y+26+m*22,19,1,'#000','center'))});y+=hh};
+   if(y>Hh-250)np();head();
+   s.items.forEach((i,n)=>{if(y>Hh-120){np();head()}cell(50,y,100,44,'В'+(n+1),1);ch.forEach((t,j)=>{const has=(i.types||[]).includes(t);cell(150+j*cw,y,cw,44,has?(isN(s,t)?'1 шт':f(lmT(i,t))+' м.п.'):'',0)});y+=44});
+   if(y>Hh-120){np();head()}cell(50,y,100,48,'Итого',1,'#f3f3f3');ch.forEach((t,j)=>cell(150+j*cw,y,cw,48,fv(s,t)+' '+un(s,t),1,'#f3f3f3'));y+=48+24});
+  tx('Ширина откосов, мм: '+(s.w||'—'),50,y,24);y+=56});
+ ['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';if(!s.items.length)return;
+  s.items.forEach((i,n)=>{const p=n%6;if(p==0){np();tx('Схемы: '+sn.toLowerCase()+' работы'+(n?' (продолжение)':''),50,y,30,1,'#1f6feb');y=130}
+   drawCard(x,50+(p%2)*570,y+Math.floor(p/2)*520,'В'+(n+1),i,(i.types||[]).slice(0,6),COL,s.nol||[])})});
  const E=new TextEncoder(),P=[],off=[];let L=0;const add=b=>{if(typeof b=='string')b=E.encode(b);P.push(b);L+=b.length};
  const jp=pages.map(cv=>{const b=atob(cv.toDataURL('image/jpeg',.85).split(',')[1]);return Uint8Array.from(b,ch=>ch.charCodeAt(0))});
  const obj=(n,s)=>{off[n]=L;add(n+' 0 obj\n'+s+'\nendobj\n')};add('%PDF-1.4\n');
