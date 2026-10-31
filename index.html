@@ -99,21 +99,20 @@ function objView(a){const o=cur(),s=sec();
  <label>Телефон заказчика</label><input id="phn" type="tel" inputmode="tel" value="${esc(o.phone)}" placeholder="+380 XX XXX XX XX" autocomplete="tel">
  <label>Статус объекта</label><div class="seg">${ST.map(t=>`<button class="${o.st===t?'on':''}" onclick="cur().st='${t}';save();render()">${t}</button>`).join('')}</div></div>
  <div class="tabs"><button class="${S.tab=='in'?'on':''}" onclick="S.tab='in';render()">Внутренние</button><button class="${S.tab=='out'?'on':''}" onclick="S.tab='out';render()">Наружные</button></div>
- <div class="card">${S.tab=='in'?`<label>Ширина откосов, мм (внутренние работы)</label><input id="sw" inputmode="decimal" value="${esc(s.w)}">`:''}
- <label>Виды работ</label>
+ <div class="card"> <label>Виды работ</label>
  <div class="row"><input id="nt" placeholder="Новый вид работ"><button onclick="addType()" style="flex:0 0 auto">Добавить</button></div><label class="chk"><input type="checkbox" id="nn"><span>Расчёт по количеству изделий</span></label>
  ${s.types.map((t,k)=>`<div class="row" style="margin-top:6px"><button style="min-height:44px;text-align:left" onclick="renType(${k})">✎ ${esc(t)}${isN(s,t)?' (шт)':''}</button><button class="d" style="min-height:44px;flex:0 0 56px" onclick="delType(${k})">✕</button></div>`).join('')}
  <button class="gh w" style="margin-top:12px;min-height:44px" onclick="saveTpl()">Сохранить виды работ как шаблон</button></div>
  ${s.items.map((i,k)=>{const T=i.types||[];return `<div class="card it itm${T.length&&T.every(t=>i.done&&i.done[t])?' fin':''}"><div onclick="editItem('${i.id}')" style="flex:1"><b>В${k+1}</b><span class="kd">${esc(i.kind||'окно')}</span>${(i.ph||[]).length?` <span class="mu">📷${i.ph.length}</span>`:''}<div class="mu">${T.length?T.map(t=>esc(t)+(isN(s,t)?' (шт)':' '+f(lmT(i,t)))+(i.done&&i.done[t]?' ✔':'')+(i.ov&&i.ov[t]&&Object.values(i.ov[t]).some(v=>v!=='')?'*':'')).join(' · '):'работа не выбрана'}</div><div class="mu">${i.l||0} / ${i.r||0} / ${i.t||0} мм${i.w?' · откос '+esc(i.w):''}</div>${i.note?`<div class="mu">${esc(i.note)}</div>`:''}</div><div class="big">${T.length?'':f(lm(i))}</div></div>`}).join('')}
  <div class="card tot"><div class="mu">Итого: ${SN[S.tab].toLowerCase()}</div>${s.types.length?s.types.map(t=>`<div class="big">${esc(t)}: ${fv(s,t)} ${un(s,t)}</div>`).join(''):'<div class="mu">Добавьте вид работ</div>'}</div>
  <div class="bar"><button class="b" onclick="editItem('','окно')">+ Окно</button><button class="b2" onclick="editItem('','дверь')">+ Дверь</button><button style="flex:0 0 auto" onclick="exportMenu()">Экспорт</button></div>`;
- $('#nm').oninput=e=>{o.name=e.target.value;save()};$('#dt').oninput=e=>{o.date=e.target.value;save()};$('#cl').oninput=e=>{o.client=e.target.value;save()};$('#phn').oninput=e=>{o.phone=e.target.value;save()};if($('#sw'))$('#sw').oninput=e=>{s.w=e.target.value;save()}}
+ $('#nm').oninput=e=>{o.name=e.target.value;save()};$('#dt').oninput=e=>{o.date=e.target.value;save()};$('#cl').oninput=e=>{o.client=e.target.value;save()};$('#phn').oninput=e=>{o.phone=e.target.value;save()}}
 function renType(k){const t=sec().types[k];$('#ov').innerHTML=`<div class="ov"><div class="sh"><h1>Переименовать работу</h1><input id="rn" value="${esc(t)}"><div class="row" style="margin-top:14px"><button onclick="closeOv()">Отмена</button><button class="b" onclick="doRen(${k})">Сохранить</button></div></div></div>`}
 function doRen(k){const s=sec(),t=s.types[k],v=$('#rn').value.trim();if(!v||(v!==t&&s.types.includes(v))){closeOv();return}
  s.types[k]=v;s.nol=(s.nol||[]).map(x=>x===t?v:x);s.items.forEach(i=>{i.types=(i.types||[]).map(x=>x===t?v:x);if(v!==t){if(i.ov&&i.ov[t]){i.ov[v]=i.ov[t];delete i.ov[t]}if(i.done&&i.done[t]){i.done[v]=i.done[t];delete i.done[t]}}});save();closeOv();render()}
 function addType(){const v=$('#nt').value.trim(),s=sec();if(v&&!s.types.includes(v)){s.types.push(v);if($('#nn').checked)(s.nol=s.nol||[]).push(v);save();render()}}
 function delType(k){const s=sec(),t=s.types[k];confirmBox(`Удалить вид работ «${t}»?`,()=>{s.types=s.types.filter(x=>x!==t);s.nol=(s.nol||[]).filter(x=>x!==t);s.items.forEach(i=>{i.types=(i.types||[]).filter(x=>x!==t);if(i.done)delete i.done[t]});save();render()})}
-function editItem(id,kind){const s=sec(),ex=s.items.find(i=>i.id===id),it=ex||{id:'',l:'',r:'',t:'',w:S.tab=='in'?s.w:'',note:'',types:[],ov:{},done:{},ph:[],kind:kind||'окно'},n=ex?s.items.indexOf(ex)+1:s.items.length+1;
+function editItem(id,kind){const s=sec(),ex=s.items.find(i=>i.id===id),it=ex||{id:'',l:'',r:'',t:'',w:'',note:'',types:[],ov:{},done:{},ph:[],kind:kind||'окно'},n=ex?s.items.indexOf(ex)+1:s.items.length+1;
  DR={ph:(it.ph||[]).slice(),add:[],rem:[],kind:it.kind||'окно'};
  const oo=cur(),opts=[];['in','out'].forEach(k=>oo[k].items.forEach((q,m)=>{if(q.id!==id)opts.push(`<option value="${k}:${m}">В${m+1} · ${esc(q.kind||'окно')} · ${k=='in'?'внутр.':'нар.'} — ${q.l||0}/${q.r||0}/${q.t||0}, откос ${q.w||'—'}</option>`)}));
  const fld=(k,l)=>`<div><label>${l}</label><input id="f${k}" inputmode="decimal" enterkeyhint="next" value="${esc(it[k])}" oninput="pv()"></div>`;
@@ -146,7 +145,7 @@ function exportMenu(){$('#ov').innerHTML=`<div class="ov"><div class="sh"><h1>Э
 function rowsAll(){const o=cur(),A=[],B=[],N=v=>v===''||v==null?'':+v||0;['in','out'].forEach(k=>{const s=o[k],sn=k=='in'?'Внутренние':'Наружные';
  s.items.forEach((i,n)=>{const T=i.types||[];if(!T.length)A.push([sn,'В'+(n+1),i.kind||'окно','',N(i.l),N(i.r),N(i.t),N(i.w),+lm(i).toFixed(3),i.note||'']);
   T.forEach(t=>A.push(isN(s,t)?[sn,'В'+(n+1),i.kind||'окно',t,'','','','','',i.note||'']:[sn,'В'+(n+1),i.kind||'окно',t,N(eff(i,t,'l')),N(eff(i,t,'r')),N(eff(i,t,'t')),N(eff(i,t,'w')),+lmT(i,t).toFixed(3),i.note||'']))});
- s.types.forEach(t=>B.push([sn,t,+tT(s,t).toFixed(3),isN(s,t)?'шт':'пог. м',k=='in'?N(s.w):'']))});return[A,B,o]}
+ s.types.forEach(t=>B.push([sn,t,+tT(s,t).toFixed(3),isN(s,t)?'шт':'пог. м']))});return[A,B,o]}
 const fname=ext=>'Ведомость_'+(cur().name||'объект').replace(/[^\wа-яё]+/gi,'_').slice(0,40)+'.'+ext;
 function out(name,data){const b=data instanceof Blob?data:new Blob([data]);const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);closeOv()}
 function crc(b){let t=crc.t;if(!t){t=crc.t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t.push(c>>>0)}}let r=-1;for(const v of b)r=t[(r^v)&255]^(r>>>8);return(r^-1)>>>0}
@@ -164,7 +163,7 @@ const rows=R.map((r,i)=>`<row r="${i+1}">`+r.map((v,j)=>v===''||v==null?'':typeo
 return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><cols>'+W.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols><sheetData>'+rows+'</sheetData></worksheet>'}
 function doXlsx(){const[A,B,o]=rowsAll(),H0='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 const S=[['Замеры',[['Раздел','№','Тип','Работа','Левая, мм','Правая, мм','Верх, мм','Ширина откоса, мм','Пог. м','Примечание'],...A],[11,6,9,18,10,10,10,14,9,24]],
-['Итоги',[['Раздел','Работа','Итого','Ед.','Ширина откосов раздела, мм'],...B],[11,20,10,8,18]],
+['Итоги',[['Раздел','Работа','Итого','Ед.'],...B],[11,20,10,8]],
 ['Объект',[['Объект',o.name||''],['Заказчик',o.client||''],['Телефон',o.phone||''],['Дата',fd(o.date)]],[12,34]]];
 const R='http://schemas.openxmlformats.org/officeDocument/2006/relationships';
 out(fname('xlsx'),mkzip([
@@ -201,7 +200,7 @@ async function doPdf(){const o=cur(),W=1240,Hh=1754,pages=[],COL=['#1f6feb','#d1
    if(y>Hh-250)np();head();
    s.items.forEach((i,n)=>{if(y>Hh-120){np();head()}cell(50,y,100,44,'В'+(n+1),1);ch.forEach((t,j)=>{const has=(i.types||[]).includes(t);cell(150+j*cw,y,cw,44,has?(isN(s,t)?'1 шт':f(lmT(i,t))+' м.п.'):'',0)});y+=44});
    y+=24});
-  if(k=='in'){tx('Ширина откосов, мм: '+(s.w||'—'),50,y,24);y+=56}else y+=24});
+  y+=24});
  {const R=[];['in','out'].forEach(k=>{const s=o[k];s.types.forEach(t=>{if(tT(s,t))R.push([t+(k=='in'?' (внутренние)':' (наружные)'),fv(s,t)+' '+un(s,t)])})});
   if(R.length){if(y>Hh-200-R.length*46)np();tx('Итого',50,y,30,1,'#1f6feb');y+=40;
    const cl=(px,w,q,b,fill)=>{if(fill){x.fillStyle=fill;x.fillRect(px,y,w,46)}x.strokeStyle='#777';x.lineWidth=1.5;x.strokeRect(px,y,w,46);tx(q,px+w/2,y+31,21,b,'#000','center')};
