@@ -1,0 +1,56 @@
+name: Gemini — помощник по разработке
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "Что нужно изменить в приложении?"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  gemini:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Получить код проекта
+        uses: actions/checkout@v4
+
+      - name: Выполнить задачу через Gemini
+        uses: google-github-actions/run-gemini-cli@v0
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          prompt: |
+            Ты — опытный разработчик.
+            Работаешь над веб-приложением для замеров
+            внутренних и наружных оконных откосов.
+
+            Задача пользователя:
+            ${{ inputs.task }}
+
+            Изучи существующий проект перед изменениями.
+            Сохраняй совместимость с текущим приложением.
+            Не удаляй существующие функции без необходимости.
+            Не изменяй секреты и настройки GitHub.
+            Не добавляй платные сервисы.
+            Внеси необходимые изменения в файлы проекта.
+            Не публикуй изменения самостоятельно.
+
+      - name: Создать Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Изменения от Gemini"
+          title: "Предложенные изменения от Gemini"
+          body: |
+            Gemini выполнил задачу:
+            ${{ inputs.task }}
+
+            Проверь изменения перед объединением.
+          branch: gemini/automated-changes
+          delete-branch: true
+          
