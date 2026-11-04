@@ -81,6 +81,58 @@ label{font-size:11px;letter-spacing:.06em}
 @media(max-width:380px){body{padding-left:11px;padding-right:11px}.bar button{font-size:10px}.bar button .ni{font-size:17px}.dashgrid{gap:7px}}
 .fold{padding:0!important;overflow:hidden}.fold summary{list-style:none;cursor:pointer;padding:16px;font-weight:800;display:flex;align-items:center;justify-content:space-between}.fold summary::-webkit-details-marker{display:none}.fold summary:after{content:"⌄";font-size:20px;color:var(--mu)}.fold[open] summary:after{content:"⌃"}.fold .foldbody{padding:0 16px 16px}.workadd{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0}.workadd button{min-height:58px;font-size:15px}.itemline{cursor:pointer;transition:background .15s}.itemline:active{background:#ffffff0b}
 
+
+/* Visual Design Upgrade v21 — Glassmorphism, Glow & Smooth UI */
+:root {
+  --bg: #070a10;
+  --card: linear-gradient(145deg, rgba(20, 30, 45, 0.75), rgba(13, 20, 32, 0.85));
+  --card2: rgba(255, 255, 255, 0.08);
+  --bd: rgba(255, 255, 255, 0.12);
+  --pr: #65a8ff;
+  --pr2: #8b83ff;
+  --st-ok-glow: 0 0 12px rgba(74, 222, 156, 0.35);
+  --st-pr-glow: 0 0 12px rgba(101, 168, 255, 0.35);
+  --st-am-glow: 0 0 12px rgba(251, 191, 74, 0.35);
+}
+.card {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.card:active {
+  transform: scale(0.988);
+}
+button {
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s, box-shadow 0.15s;
+}
+button:active {
+  transform: scale(0.96);
+}
+.st0 {
+  background: rgba(251, 191, 74, 0.16) !important;
+  color: #fcd34d !important;
+  border: 1px solid rgba(251, 191, 74, 0.4);
+  box-shadow: var(--st-am-glow);
+}
+.st1 {
+  background: rgba(101, 168, 255, 0.16) !important;
+  color: #93c5fd !important;
+  border: 1px solid rgba(101, 168, 255, 0.4);
+  box-shadow: var(--st-pr-glow);
+}
+.st2 {
+  background: rgba(74, 222, 156, 0.16) !important;
+  color: #6ee7b7 !important;
+  border: 1px solid rgba(74, 222, 156, 0.4);
+  box-shadow: var(--st-ok-glow);
+}
+.bar {
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+}
+
 </style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" crossorigin href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600&display=swap"></head><body><div id="app"></div><div id="ov"></div>
 <script>
 const KEY='otkosy-v1',PRICE_KEY='otkosy-prices-v1',ORD_KEY='otkosy-orders-v1';let S={objs:[],orders:[],cur:null,orderCur:null,tab:'in',page:'home',prices:{},statsMonth:new Date().toISOString().slice(0,7)};
@@ -115,7 +167,7 @@ const DB=new Promise(r=>{try{const q=indexedDB.open('otkosy-ph',1);q.onupgradene
 const pdb=(m,k,v)=>DB.then(d=>d?new Promise(r=>{const t=d.transaction('p',m==='get'?'readonly':'readwrite').objectStore('p'),q=m==='get'?t.get(k):m==='put'?t.put(v,k):t.delete(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)}):null);
 const toast=m=>{const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2200)};
 const slots=o=>{let n=0,d=0;['in','out'].forEach(k=>o[k].items.forEach(i=>{const T=i.types||[];n+=T.length;d+=T.filter(t=>i.done&&i.done[t]).length}));return[n,d]};
-const VER='20';
+const VER='21';
 // Финансы объекта: ставки, выполненные объёмы, оплаты, расходы и помощники.
 const money=n=>(+n||0).toLocaleString('uk-UA',{maximumFractionDigits:2})+' грн';
 function financeTotals(o){
@@ -348,7 +400,59 @@ out(fname('xlsx'),mkzip([
 ['xl/_rels/workbook.xml.rels',H0+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+S.map((_,i)=>`<Relationship Id="rId${i+1}" Type="${R}/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')+'</Relationships>'],
 ...S.map((q,i)=>[`xl/worksheets/sheet${i+1}.xml`,xmlSheet(q[1],q[2])])]))}
 function exportMonthXlsx(month){const os=S.orders.filter(o=>(o.date||'').slice(0,7)===month),R1=[['Заказ','Клиент','Дата','Статус','Объектов','Начислено, грн','Получено, грн','Остаток, грн','Расходы и помощники, грн']],R2=[['Заказ','Объект','Дата','Статус','Замеров','Работ выполнено','Начислено, грн','Получено, грн','Расходы, грн','Помощникам, грн']],R3=[['Заказ','Объект','Тип записи','Дата','Сумма, грн','Комментарий']];os.forEach(o=>{const z=orderTotals(o.id);R1.push([o.name||'',o.client||'',fd(o.date),orderStatus(o.id),z.objects,z.earned,z.paid,z.earned-z.paid,z.expenses+z.helpers]);orderObjs(o.id).forEach(x=>{const fz=financeTotals(x),sl=slots(x);R2.push([o.name||'',x.name||'',fd(x.date),x.st,x.in.items.length+x.out.items.length,sl[1]+'/'+sl[0],fz.earned,fz.paid,fz.expenses,fz.helpers]);[['Оплата',x.payments],['Расход',x.expenses],['Помощнику',x.helpers]].forEach(([k,arr])=>(arr||[]).forEach(v=>R3.push([o.name||'',x.name||'',k,fd(v.date),+v.amount||0,v.note||''])))})});const H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',Sheets=[['Заказы',R1,[24,22,12,14,11,18,18,18,24]],['Объекты',R2,[24,24,12,14,12,16,18,18,16,18]],['Финансы',R3,[24,24,16,12,16,32]]],Rel='http://schemas.openxmlformats.org/officeDocument/2006/relationships';out('Otkosy_'+month+'.xlsx',mkzip([['[Content_Types].xml',H+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'+Sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')+'</Types>'],['_rels/.rels',H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+Rel+'/officeDocument" Target="xl/workbook.xml"/></Relationships>'],['xl/workbook.xml',H+'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="'+Rel+'"><sheets>'+Sheets.map((q,i)=>`<sheet name="${q[0]}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')+'</sheets></workbook>'],['xl/_rels/workbook.xml.rels',H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+Sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="${Rel}/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')+'</Relationships>'],...Sheets.map((q,i)=>[`xl/worksheets/sheet${i+1}.xml`,xmlSheet(q[1],q[2])])]))}
-function exportOrderReport(id){const o=S.orders.find(x=>x.id===id);if(!o)return;const os=orderObjs(id),z=orderTotals(id),eh=v=>esc(v).replace(/'/g,'&#39;'),parts=os.map(x=>{const fz=financeTotals(x),[n,d]=slots(x);return `<section><h2>${eh(x.name||'Объект без названия')}</h2><p>Дата: ${fd(x.date)} · Статус: ${eh(x.st)} · Замеров: ${x.in.items.length+x.out.items.length}</p><p>Выполнено работ: ${d} из ${n} · Начислено: ${money(fz.earned)} · Получено: ${money(fz.paid)}</p>${['in','out'].map(k=>{const q=x[k];return `<h3>${k==='in'?'Внутренние работы':'Наружные работы'}</h3><table><tr><th>№</th><th>Изделие</th><th>Размеры Л/П/В</th><th>Работы</th><th>Примечание</th></tr>${q.items.map((it,i)=>`<tr><td>${i+1}</td><td>${eh(it.kind||'окно')}</td><td>${it.l||0}/${it.r||0}/${it.t||0} мм</td><td>${(it.types||[]).map(t=>eh(t)+(it.done&&it.done[t]?' ✓':'')).join(', ')}</td><td>${eh(it.note||'')}</td></tr>`).join('')}</table>`}).join('')}</section>`}).join('');const html=`<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Отчёт — ${eh(o.name)}</title><style>body{font:14px Arial,sans-serif;color:#172033;margin:28px}h1{font-size:24px}h2{font-size:19px;margin-bottom:6px}h3{font-size:15px}p{margin:5px 0;color:#475569}section{page-break-inside:avoid;border-top:2px solid #cbd5e1;padding-top:14px;margin-top:20px}table{width:100%;border-collapse:collapse;margin:8px 0 16px}th,td{border:1px solid #cbd5e1;padding:6px;text-align:left;font-size:12px}th{background:#eef2f7}.sum{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:16px 0}.sum div{border:1px solid #cbd5e1;padding:10px;border-radius:8px}@media print{button{display:none}body{margin:12mm}}</style><h1>Отчёт по заказу: ${eh(o.name||o.client)}</h1><p>Клиент: ${eh(o.client||'—')} · Телефон: ${eh(o.phone||'—')} · Дата: ${fd(o.date)}</p><div class="sum"><div>Объектов: <b>${z.objects}</b></div><div>Начислено: <b>${money(z.earned)}</b></div><div>Получено: <b>${money(z.paid)}</b></div><div>Остаток оплаты: <b>${money(z.earned-z.paid)}</b></div><div>Расходы и помощники: <b>${money(z.expenses+z.helpers)}</b></div><div>Результат после расходов: <b>${money(z.earned-z.expenses-z.helpers)}</b></div></div>${parts}<button onclick="window.print()">Печать / Сохранить в PDF</button></html>`;const w=window.open('','_blank');if(!w){toast('Браузер заблокировал окно отчёта');return}w.document.open();w.document.write(html);w.document.close()}
+function exportOrderReport(id){const o=S.orders.find(x=>x.id===id);if(!o)return;const os=orderObjs(id),z=orderTotals(id),eh=v=>esc(v).replace(/'/g,'&#39;'),parts=os.map(x=>{const fz=financeTotals(x),[n,d]=slots(x);return `<section><h2>${eh(x.name||'Объект без названия')}</h2><p>Дата: ${fd(x.date)} · Статус: ${eh(x.st)} · Замеров: ${x.in.items.length+x.out.items.length}</p><p>Выполнено работ: ${d} из ${n} · Начислено: ${money(fz.earned)} · Получено: ${money(fz.paid)}</p>${['in','out'].map(k=>{const q=x[k];return `<h3>${k==='in'?'Внутренние работы':'Наружные работы'}</h3><table><tr><th>№</th><th>Изделие</th><th>Размеры Л/П/В</th><th>Работы</th><th>Примечание</th></tr>${q.items.map((it,i)=>`<tr><td>${i+1}</td><td>${eh(it.kind||'окно')}</td><td>${it.l||0}/${it.r||0}/${it.t||0} мм</td><td>${(it.types||[]).map(t=>eh(t)+(it.done&&it.done[t]?' ✓':'')).join(', ')}</td><td>${eh(it.note||'')}</td></tr>`).join('')}</table>`}).join('')}</section>`}).join('');const html=`<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Отчёт — ${eh(o.name)}</title><style>body{font:14px Arial,sans-serif;color:#172033;margin:28px}h1{font-size:24px}h2{font-size:19px;margin-bottom:6px}h3{font-size:15px}p{margin:5px 0;color:#475569}section{page-break-inside:avoid;border-top:2px solid #cbd5e1;padding-top:14px;margin-top:20px}table{width:100%;border-collapse:collapse;margin:8px 0 16px}th,td{border:1px solid #cbd5e1;padding:6px;text-align:left;font-size:12px}th{background:#eef2f7}.sum{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:16px 0}.sum div{border:1px solid #cbd5e1;padding:10px;border-radius:8px}@media print{button{display:none}body{margin:12mm}}
+/* Visual Design Upgrade v21 — Glassmorphism, Glow & Smooth UI */
+:root {
+  --bg: #070a10;
+  --card: linear-gradient(145deg, rgba(20, 30, 45, 0.75), rgba(13, 20, 32, 0.85));
+  --card2: rgba(255, 255, 255, 0.08);
+  --bd: rgba(255, 255, 255, 0.12);
+  --pr: #65a8ff;
+  --pr2: #8b83ff;
+  --st-ok-glow: 0 0 12px rgba(74, 222, 156, 0.35);
+  --st-pr-glow: 0 0 12px rgba(101, 168, 255, 0.35);
+  --st-am-glow: 0 0 12px rgba(251, 191, 74, 0.35);
+}
+.card {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.card:active {
+  transform: scale(0.988);
+}
+button {
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s, box-shadow 0.15s;
+}
+button:active {
+  transform: scale(0.96);
+}
+.st0 {
+  background: rgba(251, 191, 74, 0.16) !important;
+  color: #fcd34d !important;
+  border: 1px solid rgba(251, 191, 74, 0.4);
+  box-shadow: var(--st-am-glow);
+}
+.st1 {
+  background: rgba(101, 168, 255, 0.16) !important;
+  color: #93c5fd !important;
+  border: 1px solid rgba(101, 168, 255, 0.4);
+  box-shadow: var(--st-pr-glow);
+}
+.st2 {
+  background: rgba(74, 222, 156, 0.16) !important;
+  color: #6ee7b7 !important;
+  border: 1px solid rgba(74, 222, 156, 0.4);
+  box-shadow: var(--st-ok-glow);
+}
+.bar {
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+}
+
+</style><h1>Отчёт по заказу: ${eh(o.name||o.client)}</h1><p>Клиент: ${eh(o.client||'—')} · Телефон: ${eh(o.phone||'—')} · Дата: ${fd(o.date)}</p><div class="sum"><div>Объектов: <b>${z.objects}</b></div><div>Начислено: <b>${money(z.earned)}</b></div><div>Получено: <b>${money(z.paid)}</b></div><div>Остаток оплаты: <b>${money(z.earned-z.paid)}</b></div><div>Расходы и помощники: <b>${money(z.expenses+z.helpers)}</b></div><div>Результат после расходов: <b>${money(z.earned-z.expenses-z.helpers)}</b></div></div>${parts}<button onclick="window.print()">Печать / Сохранить в PDF</button></html>`;const w=window.open('','_blank');if(!w){toast('Браузер заблокировал окно отчёта');return}w.document.open();w.document.write(html);w.document.close()}
 function drawCard(g,cx,cy,title,i,T,COL,NL){const rw=230,rh=170,rx=cx+170,ry=cy+140,nm=v=>+v||0,ra=(v,b)=>{b=+b||0;v=+v||0;return b>0?Math.min(1,v/b):1},ln=(a,b,c,d)=>{g.beginPath();g.moveTo(a,b);g.lineTo(c,d);g.stroke()};
  g.strokeStyle='#888';g.lineWidth=2;g.strokeRect(cx,cy,570,520);
  g.textAlign='left';g.fillStyle='#000';g.font='bold 28px sans-serif';g.fillText(title,cx+14,cy+36);g.font='18px sans-serif';g.fillStyle='#555';g.fillText((i.note||'').slice(0,40),cx+90,cy+36);
